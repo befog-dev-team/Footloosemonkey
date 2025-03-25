@@ -6,6 +6,7 @@ import Script from 'next/script';
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Adsense from "../components/Adsense";
+import AdSense from "../components/Adsense";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,20 +57,18 @@ export default function RootLayout({ children }) {
         {/* Google Adsense Script */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3599405412984531"
           crossorigin="anonymous"></script>
-        {/* Adsense Populate */}
-        <Adsense pId="ca-pub-3599405412984531" />
         {/* Adsense Meta */}
         <meta name="google-adsense-account" content="ca-pub-3599405412984531" />
         {/* Google Tag Manager */}
-        <Script id="gtm-init" strategy="afterInteractive" dangerouslySetInnerHTML={{
+        {/* <Script id="gtm-init" strategy="afterInteractive" dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l] = w[l] || [];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','GTM-MH54GBCJ');`,
-        }} />
+        }} /> */}
         {/* Google Tag (gtag.js) */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-LJ2F2XWVPN" />
+        {/* <Script async src="https://www.googletagmanager.com/gtag/js?id=G-LJ2F2XWVPN" />
         <Script
           id="gtag-init"
           strategy="afterInteractive"
@@ -81,7 +80,7 @@ export default function RootLayout({ children }) {
               gtag('config', 'G-LJ2F2XWVPN');
             `,
           }}
-        />
+        /> */}
         {/* Google Search Console Meta Tag */}
         <meta name="google-site-verification" content="jJaVVBVZadwqZdB7FOP8ATIu_bC5YXbzUWOqjpkS_gc" />
 
@@ -119,14 +118,14 @@ export default function RootLayout({ children }) {
 
       <body className={inter.className}>
         {/* Google Tag Manager (noscript) */}
-        <noscript>
+        {/* <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MH54GBCJ"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
-        </noscript>
+        </noscript> */}
 
         {/*  Toastify Container */}
         <ToastContainer
@@ -143,6 +142,8 @@ export default function RootLayout({ children }) {
           transition={Bounce}
         />
         <Navbar />
+        {/* Adsense Component */}
+        <AdSense />
         {children}
         <Footer />
 
