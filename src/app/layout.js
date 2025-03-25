@@ -55,8 +55,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Google Adsense Script */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3599405412984531"
-          crossorigin="anonymous"></script>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3599405412984531"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         {/* Adsense Meta */}
         <meta name="google-adsense-account" content="ca-pub-3599405412984531" />
         {/* Google Tag Manager */}
