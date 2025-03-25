@@ -82,6 +82,9 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        {/* Google Search Console Meta Tag */}
+        <meta name="google-site-verification" content="jJaVVBVZadwqZdB7FOP8ATIu_bC5YXbzUWOqjpkS_gc" />
+
         {/* Canonical Tag */}
         <link rel="canonical" href={metadata.siteUrl} />
         {/* Meta Tags */}
