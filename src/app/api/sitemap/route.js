@@ -18,7 +18,7 @@ export async function GET() {
         "/refund-policy",
         "/payment-checkout",
         "/leaderboard",
-        "acting",
+        "/acting",
         "/dancing",
         "/singing",
         "/mimicry",
