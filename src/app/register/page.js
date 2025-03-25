@@ -244,11 +244,9 @@ const RegisterForm = () => {
     fetchData();
   }, []);
 
-  // Submit Data in MongoDB -->
-
   // Google Sheet Integration
   const handleSubmitGoogleForm = async () => {
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxUfsJR5oWPQtvpchqO3JHz25brnjSOYrQCkpSD0g0GBVmEb0Ng_Z8BDuWw1sNRloSv/exec';
+    const scriptURL = process.env.NEXT_PUBLIC_GOOGLE_SHEET_DATABASE_URL;
     const form = document.forms['submit-to-google-sheet'];
 
     const formData = new FormData(form);
@@ -279,7 +277,6 @@ const RegisterForm = () => {
   const registrationSuccess = true; // Update based on your registration logic
 
   // Handle form submission
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate(values);

@@ -179,7 +179,7 @@ const Navbar = () => {
               <div id='alert2' className="flex leading-6 lg:text-lg text-[#fff] font-rubik w-[95vw] text-center justify-center" style={{ display: 'none' }}>
                 <Link href={'/register'}>
                   <div className='md:text-xl leading-8 font-semibold sm:text-lg md:pl-[5vw] pl-0 w-[80vw] md:w-full'>
-                    <strong>Footloose Monkey</strong> competition started from <strong>12th Nov</strong>! Showcase your talent and shine! <strong>🌟</strong>
+                    <strong>Footloose Monkey</strong> competition started! Showcase your talent and shine! <strong>🌟</strong>
                   </div>
                 </Link>
               </div>

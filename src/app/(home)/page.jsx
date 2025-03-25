@@ -17,29 +17,29 @@ import Contact from "../../components/home/Contact";
 
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
-  const [competition, setCompetition] = useState('')
+  // const [competition, setCompetition] = useState('')
 
-  // Load data from getAdminData()
-  useEffect(() => {
-    const fetchAdminData = async () => {
-      const response = await getAdminData();
-      if (response.success && response.data) {
-        setCompetition(response.data[0].talent.toLowerCase());
-      }
-      else {
-        console.error('Error fetching data:', response.message);
-      }
-    };
-    fetchAdminData();
-  }, []);
+  // // Load data from getAdminData()
+  // useEffect(() => {
+  //   const fetchAdminData = async () => {
+  //     const response = await getAdminData();
+  //     if (response.success && response.data) {
+  //       setCompetition(response.data[0].talent.toLowerCase());
+  //     }
+  //     else {
+  //       console.error('Error fetching data:', response.message);
+  //     }
+  //   };
+  //   fetchAdminData();
+  // }, []);
 
-  useEffect(() => {
-  }, [competition]);
+  // useEffect(() => {
+  // }, [competition]);
 
   return (
     <>
       <Ribbon />
-      <Collboartion competition={competition} />
+      {/* <Collboartion competition={competition} /> */}
       <Hero />
       <Mission />
       <Talent />
