@@ -13,6 +13,40 @@ export const metadata = {
   title: "Footloosemonkey",
   description: "Join Footloosemonkey, the ultimate talent competition for kids aged 6-12! Showcase your skills in dancing, singing, acting, and more in a fun, encouraging environment. Discover and celebrate young talents today!",
   siteUrl: "https://www.footloosemonkey.club",
+  keywords: [
+    "Footloosemonkey",
+    "talent competition",
+    "kids talent",
+    "singing competition",
+    "dancing competition",
+    "mimicry competition",
+    "acting competition",
+    "drawing competition",
+    "young talents",
+    "talent show",
+    "kids show",
+    "Footloosemonkey club",
+    "Footloosemonkey talent competition",
+    "Footloosemonkey kids talent",
+    "Foot",
+    "loose",
+    "monkey",
+    "Footloosemonkey singing competition",
+    "Footloosemonkey dancing competition",
+    "Footloosemonkey mimicry competition",
+    "Footmonkey",
+    "Loosemonkey",
+    "Footloosemonkey acting competition",
+    "Footloosemonkey drawing competition",
+    "Footloosemonkey young talents",
+    "Footloosemonkey talent show",
+    "Footloosemonkey kids show",
+    "Footloosemonkey club talent competition",
+    "Footloosemonkey club kids talent",
+    "Footloosemonkey club singing competition",
+    "Footloosemonkey club dancing competition",
+    "Footloosemonkey club mimicry competition",
+  ]
 };
 
 export default function RootLayout({ children }) {
@@ -20,11 +54,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Google Adsense Script */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8590034113156778" crossOrigin="anonymous"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3599405412984531"
+          crossorigin="anonymous"></script>
         {/* Adsense Populate */}
-        <Adsense pId="ca-pub-8590034113156778" />
+        <Adsense pId="ca-pub-3599405412984531" />
         {/* Adsense Meta */}
-        <meta name="google-adsense-account" content="ca-pub-8590034113156778"></meta>
+        <meta name="google-adsense-account" content="ca-pub-3599405412984531" />
         {/* Google Tag Manager */}
         <Script id="gtm-init" strategy="afterInteractive" dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l] = w[l] || [];w[l].push({'gtm.start':
