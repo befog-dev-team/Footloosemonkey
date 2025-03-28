@@ -7,8 +7,6 @@ export async function GET() {
 User-agent: *
 Disallow: /api/
 Disallow: /admin/
-
-User-agent: *
 Allow: /ads.txt
 
 User-agent: Googlebot
@@ -31,7 +29,6 @@ Allow: /
 
 User-agent: AdsBot-Google
 Allow: /
-Disallow: /admin/
 
 User-agent: Googlebot-Ads
 Allow: /
@@ -42,6 +39,7 @@ Sitemap: ${siteUrl}/sitemap.xml
     return new NextResponse(robotsTxt, {
         headers: {
             "Content-Type": "text/plain",
+            "Cache-Control": "public, max-age=86400", // Cache for 1 day
         },
     });
 }
