@@ -13,28 +13,28 @@ import Pricing from "../../components/home/Pricing";
 // import Schedule from "../../components/home/Schedule";
 import Voting from "../../components/home/Voting";
 import Contact from "../../components/home/Contact";
-import Showcase from "../../components/home/Showcase";
+import Showcase from "../../components/home/TalentShowcase";
 
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
-  // const [competition, setCompetition] = useState('')
+  const [competition, setCompetition] = useState('')
 
-  // // Load data from getAdminData()
-  // useEffect(() => {
-  //   const fetchAdminData = async () => {
-  //     const response = await getAdminData();
-  //     if (response.success && response.data) {
-  //       setCompetition(response.data[0].talent.toLowerCase());
-  //     }
-  //     else {
-  //       console.error('Error fetching data:', response.message);
-  //     }
-  //   };
-  //   fetchAdminData();
-  // }, []);
+  // Load data from getAdminData()
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      const response = await getAdminData();
+      if (response.success && response.data) {
+        setCompetition(response.data[0].talent.toLowerCase());
+      }
+      else {
+        console.error('Error fetching data:', response.message);
+      }
+    };
+    fetchAdminData();
+  }, []);
 
-  // useEffect(() => {
-  // }, [competition]);
+  useEffect(() => {
+  }, [competition]);
 
   return (
     <>
@@ -43,7 +43,7 @@ export default function Home() {
       {/* <Hero /> */} {/* <-- Old Section */}
 
       {/* Showcase Section */}
-      <Showcase />
+      <Showcase competition={competition} />
 
       <Mission />
       <Talent />
