@@ -11,7 +11,7 @@ export default function Ribbon() {
           height={100}
           src="/collaboration/register.svg"
           alt="Collaboration"
-          className="absolute object-cover right-0 w-[9rem]"
+          className="absolute object-cover right-0 w-[9rem] z-[10]"
         />
       </div>
     </>

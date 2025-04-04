@@ -152,7 +152,7 @@ const Navbar = () => {
 
         {/* Alert */}
         {isVisible && (
-          <div className="relative flex justify-between items-center bg-[#6e96cf] h-[17vh] md:h-[8vh] border-b-2 py-2">
+          <div className="relative flex justify-between items-center bg-[#2E476A] h-[17vh] md:h-[8vh] border-b-2 py-2">
             <div className="flex justify-between w-full items-center text-center">
               {/* Special Offer */}
               {/* <div id='specialAlert' className="flex leading-6 lg:text-lg text-[#fff] font-rubik w-[95vw] text-center justify-center" style={{ display: 'none' }}>
@@ -215,7 +215,7 @@ const Navbar = () => {
         )}
 
         {/* Navbar */}
-        <div className="flex flex-row items-center justify-between w-full px-6 py-4 h-[5rem] relative">
+        <div className="flex flex-row items-center justify-between w-full px-6 py-4 h-[5rem] relative bg-[#FEA2D1]">
           <div className='flex items-center gap-[5rem]'>
             {/* Logo */}
             <div>
@@ -234,7 +234,7 @@ const Navbar = () => {
           </div>
 
           {/* Nav Items - Hidden on Small Screens */}
-          <div className="hidden lg:flex flex-row items-center gap-12">
+          <div className="hidden lg:flex flex-row items-center gap-12 text-[#70523a]">
             <Link href="/" className="text-xl font-semibold hover:underline transition-colors duration-200">Home</Link>
             <Link href="/about" className="text-xl font-semibold hover:underline transition-colors duration-200">About Us</Link>
             <Link href={`/${competition}`} className="text-xl font-semibold hover:underline transition-colors duration-200">Competition</Link>

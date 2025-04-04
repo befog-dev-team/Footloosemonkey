@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { getAdminData } from "../services/index";
 import Ribbon from "../../components/home/Ribbon";
 import Collboartion from "../../components/home/Collaboration";
-import Hero from "../../components/home/Hero";
 import Mission from "../../components/home/Mission";
 import Talent from "../../components/home/Talent";
 import Certificate from "../../components/home/Certificate";
@@ -14,6 +13,7 @@ import Pricing from "../../components/home/Pricing";
 // import Schedule from "../../components/home/Schedule";
 import Voting from "../../components/home/Voting";
 import Contact from "../../components/home/Contact";
+import Showcase from "../../components/home/Showcase";
 
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
@@ -40,7 +40,11 @@ export default function Home() {
     <>
       <Ribbon />
       {/* <Collboartion competition={competition} /> */}
-      <Hero />
+      {/* <Hero /> */} {/* <-- Old Section */}
+
+      {/* Showcase Section */}
+      <Showcase />
+
       <Mission />
       <Talent />
       <Certificate />
