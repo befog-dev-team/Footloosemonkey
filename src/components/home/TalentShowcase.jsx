@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function TalentShowcase({ competition }) {
     return (
-        <div className="min-h-[75vh] bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-center items-center p-4 md:px-8">
+        <div className="min-h-[85vh] bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-center items-center p-4 md:px-8">
             <div className="max-w-6xl w-full">
                 {/* Header Section */}
                 <div className="text-center mb-4 animate-fade-in">
@@ -11,7 +11,7 @@ export default function TalentShowcase({ competition }) {
                         Showcase Your Talent
                     </h1>
                     <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-6">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus in libero risus
+                        Unleash your creativity and let your passion speak! Whether you&apos;re a dancer, singer, poet, or performer—this is your stage to shine. Step into the spotlight, express yourself, and leave the audience in awe.
                     </p>
                     <div className="flex justify-center gap-4">
                         <Link href="/register" className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-blue-500">
@@ -23,9 +23,6 @@ export default function TalentShowcase({ competition }) {
                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
                                 </svg>
                             </span>
-                        </Link>
-                        <Link href="/about" className="px-6 py-3 font-medium text-blue-600 transition-all duration-200 rounded-full hover:bg-blue-50 hover:shadow-sm">
-                            Learn More
                         </Link>
                     </div>
                 </div>

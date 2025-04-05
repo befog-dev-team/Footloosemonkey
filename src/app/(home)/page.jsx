@@ -10,6 +10,7 @@ import Certificate from "../../components/home/Certificate";
 import About from "../../components/home/About";
 // import OfferPrice from "../../components/home/OfferPrice";
 import Pricing from "../../components/home/Pricing";
+import PricingPlans from "../../components/home/PricingPlans";
 // import Schedule from "../../components/home/Schedule";
 import Voting from "../../components/home/Voting";
 import Contact from "../../components/home/Contact";
@@ -50,7 +51,8 @@ export default function Home() {
       <Certificate />
       <About />
       {/* <OfferPrice /> */}
-      <Pricing />
+      {/* <Pricing /> */}
+      <PricingPlans />
       {/* <Schedule /> */}
       <Voting />
       <Contact />
