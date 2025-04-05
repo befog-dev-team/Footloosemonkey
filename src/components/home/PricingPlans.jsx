@@ -13,13 +13,13 @@ const PricingPlans = () => {
                     </p>
                 </div>
 
-                <div className="flex items-center justify-center gap-2 mb-12">
+                {/* <div className="flex items-center justify-center gap-2 mb-12">
                     <p className="text-[18px] font-[400] text-[#170F49]">How many users you have?</p>
                     <div className="w-[117px] h-[52px] bg-white border boder-[1px] border-[#D9DBE9] rounded-[15px] flex items-center justify-center">
                         <p className='text-[#170F49] text-[20px] font-[700]'>10</p>
                     </div>
                     <span className="text-[#170F49] text-[18px] font-[700]">users</span>
-                </div>
+                </div> */}
 
                 <div className="flex flex-wrap justify-center gap-8">
                     {/* Young Category Plan */}
