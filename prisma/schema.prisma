@@ -17,10 +17,10 @@ model Submission {
   id                       String   @id @default(cuid())
   publicId                 String   @unique
   participantId            String
-  participantName          String
+  name          String
   participantEmail         String
-  participantAge           String
-  participantAgeCriteria   String
+  age           String
+  ageCriteria   String
   partcipantAddress        String
   participantNumber        String
   participantCharge        String

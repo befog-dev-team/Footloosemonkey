@@ -30,7 +30,7 @@ export const fetchLeaderboard = async () => {
                 id: true,
                 participantId: true,
                 profilepic: true,
-                participantName: true,
+                name: true,
                 participantTalent: true,
                 voteCount: true,
                 createdAt: true

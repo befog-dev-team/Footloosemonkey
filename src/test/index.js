@@ -133,7 +133,7 @@ const VideoCard = ({ video }) => {
                 <h2 className="text-lg font-bold">{video.postTitle}</h2>
                 <p className="text-sm text-gray-600 mb-4">{video.description}</p>
                 <p className="text-sm text-gray-600 mb-2">
-                    Uploaded by {video.participantName} ({video.participantEmail})
+                    Uploaded by {video.name} ({video.participantEmail})
                 </p>
                 <p className="text-sm text-gray-600 mb-4">
                     Uploaded {dayjs(video.createdAt).fromNow()}

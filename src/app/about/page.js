@@ -22,7 +22,7 @@ export default function AboutUs() {
                 {/* Responsive Grid for Vision and Offer */}
                 <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
                     <div className="bg-white shadow-lg p-6 rounded-lg">
-                        <Image src="/v1/about/vision1.png" alt="Performers on stage" width={600} height={350} className="rounded-lg w-full h-auto" />
+                        <Image src="/v1/about/vision2.png" alt="Performers on stage" width={600} height={350} className="rounded-lg w-full h-auto" />
                         <h2 className="text-3xl font-semibold mt-8 text-sky-700">Our Vision</h2>
                         <p className="text-xl mt-4 text-gray-600">
                             To create a vibrant community where children can grow, gain confidence, and explore their artistic potential.

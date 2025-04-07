@@ -17,7 +17,7 @@ const PaymentCheckout = () => {
   const [userName, setUserName] = useState('');
   const [userTalent, setUserTalent] = useState('');
   const [userAgeCriteria, setUserAgeCriteria] = useState('');
-  const [userParticipantAge, setUserParticipantAge] = useState('');
+  const [userage, setUserage] = useState('');
   const [userContact, setUserContact] = useState('');
   const [userAddress, setUserAddress] = useState('');
   const [charge, setCharge] = useState('');
@@ -35,10 +35,10 @@ const PaymentCheckout = () => {
 
         // Set user data
         setUserEmail(params.get('email') || '');
-        setUserName(params.get('participantName') || '');
+        setUserName(params.get('name') || '');
         setUserTalent(params.get('talent') || '');
         setUserAgeCriteria(params.get('ageCriteria') || '');
-        setUserParticipantAge(params.get('participantAge') || '');
+        setUserage(params.get('age') || '');
         setUserContact(params.get('guardianNumber') || '');
         setUserAddress(params.get('address') || '');
         setCharge(params.get('charge') || '');
@@ -71,13 +71,13 @@ const PaymentCheckout = () => {
   const handlePaymentData = async (paymentId, status) => {
     const paymentData = {
       email: userEmail,
-      participantName: userName,
+      name: userName,
       guardianNumber: userContact,
       address: userAddress,
       charge: charge,
       talent: userTalent,
       ageCriteria: userAgeCriteria,
-      participantAge: userParticipantAge,
+      age: userage,
       isPaid: true,
       paymentId: paymentId,
       status: status,

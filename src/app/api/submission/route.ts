@@ -96,10 +96,10 @@ export async function POST(request: NextRequest) {
             data: {
                 publicId: videoResult.public_id,
                 participantId: formData.get("participantId") as string,
-                participantName: formData.get("participantName") as string,
+                name: formData.get("name") as string,
                 participantEmail: formData.get("participantEmail") as string,
-                participantAge: formData.get("participantAge") as string,
-                participantAgeCriteria: formData.get("participantAgeCriteria") as string,
+                age: formData.get("age") as string,
+                ageCriteria: formData.get("ageCriteria") as string,
                 partcipantAddress: formData.get("partcipantAddress") as string,
                 participantNumber: formData.get("participantNumber") as string,
                 participantCharge: formData.get("participantCharge") as string,

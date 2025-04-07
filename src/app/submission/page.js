@@ -25,10 +25,10 @@ const UploadForm = () => {
     // Participant data
     const [formData, setFormData] = useState({
         participantId: '',
-        participantName: '',
+        name: '',
         participantEmail: '',
-        participantAge: '',
-        participantAgeCriteria: '',
+        age: '',
+        ageCriteria: '',
         participantTalent: '',
         postTitle: '',
         description: '',
@@ -68,9 +68,9 @@ const UploadForm = () => {
                 if (response.data.success && response.data.data.length > 0) {
                     const participantData = response.data.data[0];
                     const {
-                        participantName,
-                        participantAge,
-                        ageCriteria: participantAgeCriteria,
+                        name,
+                        age,
+                        ageCriteria: ageCriteria,
                         talent: participantTalent,
                         guardianNumber: participantNumber,
                         address: partcipantAddress,
@@ -82,10 +82,10 @@ const UploadForm = () => {
                     setFormData(prev => ({
                         ...prev,
                         participantId: email.split('@')[0], // Generate participantId from email
-                        participantName,
+                        name,
                         participantEmail: email,
-                        participantAge,
-                        participantAgeCriteria,
+                        age,
+                        ageCriteria,
                         participantTalent,
                         participantNumber,
                         partcipantAddress,
@@ -164,10 +164,10 @@ const UploadForm = () => {
             // Reset form after successful upload
             setFormData({
                 participantId: '',
-                participantName: '',
+                name: '',
                 participantEmail: '',
-                participantAge: '',
-                participantAgeCriteria: '',
+                age: '',
+                ageCriteria: '',
                 participantTalent: '',
                 postTitle: '',
                 description: '',

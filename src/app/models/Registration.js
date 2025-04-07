@@ -1,14 +1,17 @@
 import mongoose from 'mongoose';
 
 const registrationSchema = new mongoose.Schema({
+    category: { type: String, required: true }, // e.g., "Dance", "Singing", "Instrumental"
+    groupName: { type: String }, // For group registrations
     email: { type: String },
-    participantName: { type: String },
-    ageCriteria: { type: String }, // e.g., "6-8 years", "9-12 years"
-    participantAge: { type: Number },
+    name: { type: String },
+    // ageCriteria: { type: String }, // e.g., "6-8 years", "9-12 years"
+    age: { type: Number },
     guardianNumber: { type: String },
     address: { type: String },
     talent: { type: String },
-    charge: { type: String }, // Group charge based on age category
+    members: { type: String }, // For group registrations, list of member names
+    charges: { type: String }, // Group charge based on age category
     termsAccepted: {
         videoSharing: { type: Boolean },
         offensiveContent: { type: Boolean },

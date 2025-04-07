@@ -9,7 +9,7 @@ export async function GET(req) {
       take: 10, // Fetch top 10 submissions
       select: {
         id: true,
-        participantName: true,
+        name: true,
         participantTalent: true,
         voteCount: true,
         createdAt: true,

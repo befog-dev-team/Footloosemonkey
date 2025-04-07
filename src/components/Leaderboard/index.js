@@ -51,16 +51,16 @@ const Leaderboard = () => {
                                 <td className="py-4 px-4 border-b">
                                     <Image
                                         src={item.profilepic}
-                                        alt={`${item.participantName}'s profile`}
+                                        alt={`${item.name}'s profile`}
                                         width={40}
                                         height={40}
                                         className="rounded-full"
                                     />
                                 </td>
                                 <td className="py-4 px-4 border-b text-gray-700">
-                                    {item.participantName}
+                                    {item.name}
                                     {/* <a href={`/profile/${item.participantId}`} target="_blank" rel="noopener noreferrer">
-                                        {item.participantName}
+                                        {item.name}
                                     </a> */}
                                 </td>
                                 <td className="py-4 px-4 border-b text-gray-700 lg:table-cell">{item.participantTalent}</td>

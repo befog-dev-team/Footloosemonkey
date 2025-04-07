@@ -2,6 +2,8 @@
 import React from "react";
 
 const IndividualDetails = ({ values, onChange, errors, category }) => (
+
+    console.log("IndividualDetails", values, errors, category),
     <>
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Email:</label>
@@ -20,11 +22,11 @@ const IndividualDetails = ({ values, onChange, errors, category }) => (
             <input
                 type="text"
                 name="Participant Name"
-                value={values.participantName}
+                value={values.name}
                 onChange={onChange}
-                className={`w-full p-2 border rounded ${errors.participantName ? "border-red-500" : "border-gray-300"}`}
+                className={`w-full p-2 border rounded ${errors.name ? "border-red-500" : "border-gray-300"}`}
             />
-            {errors.participantName && <p className="text-red-500 text-sm">{errors.participantName}</p>}
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
 
         <div className="mb-4">
@@ -34,8 +36,8 @@ const IndividualDetails = ({ values, onChange, errors, category }) => (
                 name="Age"
                 value={values.age}
                 onChange={onChange}
-                min={category === "Young" ? 3 : 9}
-                max={category === "Young" ? 8 : 16}
+                min={category === "Kid" ? 5 : 13}
+                max={category === "Kid" ? 12 : 19}
                 className={`w-full p-2 border rounded ${errors.age ? "border-red-500" : "border-gray-300"}`}
             />
             {errors.age && <p className="text-red-500 text-sm">{errors.age}</p>}

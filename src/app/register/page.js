@@ -10,7 +10,7 @@ import GroupMembers from "../../components/RegistrationForm/GroupMembers";
 import TalentSelector from "../../components/RegistrationForm/TalentSelector";
 import AddressInput from "../../components/RegistrationForm/AddressInput";
 import TermsAndConditions from "../../components/RegistrationForm/TermsAndConditions";
-import { getAdminData } from "../services";
+import { addRegistrationData, getAdminData } from "../services";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const RegisterForm = () => {
     category: "",
     groupName: "",
     email: "",
-    participantName: "",
+    name: "",
     age: "",
     guardianNumber: "",
     address: "",
@@ -61,7 +61,7 @@ const RegisterForm = () => {
       "Category": "category",
       "Group Name": "groupName",
       "Email": "email",
-      "Participant Name": "participantName",
+      "Participant Name": "name",
       "Age": "age",
       "Guardian Number": "guardianNumber",
       "Address": "address",
@@ -169,7 +169,7 @@ const RegisterForm = () => {
       });
     } else {
       if (!values.email) errors.email = "Email is required";
-      if (!values.participantName) errors.participantName = "Participant's Name is required";
+      if (!values.name) errors.name = "Participant's Name is required";
       if (!values.age) errors.age = "Age is required";
     }
 
@@ -210,7 +210,7 @@ const RegisterForm = () => {
       });
     } else {
       formData.append('Email', values.email);
-      formData.append('ParticipantName', values.participantName);
+      formData.append('name', values.name);
       formData.append('Age', values.age);
     }
 
@@ -268,7 +268,7 @@ const RegisterForm = () => {
         category: values.category,
         groupName: isGroup ? values.groupName : null,
         email: isGroup ? null : values.email,
-        participantName: isGroup ? null : values.participantName,
+        name: isGroup ? null : values.name,
         age: isGroup ? null : values.age,
         guardianNumber: values.guardianNumber,
         address: values.address,
@@ -291,7 +291,7 @@ const RegisterForm = () => {
             memberCount: values.members.length
           } : {
             email: values.email,
-            participantName: values.participantName,
+            name: values.name,
             age: values.age
           })
         };

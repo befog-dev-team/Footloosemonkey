@@ -44,7 +44,7 @@ const VideoGallery = ({ searchInput }) => {
     // Filter videos based on searchInput
     const filteredVideos = videos.filter(video =>
         video.participantId.toLowerCase().includes(searchInput.toLowerCase()) ||
-        video.participantName.toLowerCase().includes(searchInput.toLowerCase()) ||
+        video.name.toLowerCase().includes(searchInput.toLowerCase()) ||
         video.postTitle.toLowerCase().includes(searchInput.toLowerCase()) ||
         video.participantTalent.toLowerCase().includes(searchInput.toLowerCase())
     );
@@ -145,13 +145,13 @@ const VideoCard = ({ video }) => {
                 <div className="flex items-center mb-2">
                     <Image
                         src={video.profilepic}
-                        alt={video.participantName}
+                        alt={video.name}
                         width={500}
                         height={500}
                         className="rounded-full mr-2 p-[0.15rem] w-[60px] h-[60px] border-blue-500 border-[3px]"
                     />
                     <div>
-                        <div className="text-xl font-semibold uppercase">{video.participantName}</div>
+                        <div className="text-xl font-semibold uppercase">{video.name}</div>
                         <div className="text-sm">{video.participantId}</div>
                     </div>
                 </div>

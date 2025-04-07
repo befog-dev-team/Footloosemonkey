@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const paymentSchema = new mongoose.Schema({
     email: { type: String, unique: true },
-    participantName: { type: String },
+    name: { type: String },
     ageCriteria: { type: String }, // e.g.,  "3-5 years", "6-8 years", "9-12 years"
-    participantAge: { type: Number },
+    age: { type: Number },
     guardianNumber: { type: String },
     address: { type: String },
     talent: { type: String },
