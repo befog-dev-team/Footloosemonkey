@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function TalentShowcase({ competition }) {
     return (
-        <div className="min-h-[85vh] bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-center items-center p-4 md:px-8">
+        <div className="min-h-[90vh] bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-center items-center p-4 md:px-8">
             <div className="max-w-6xl w-full">
                 {/* Header Section */}
                 <div className="text-center mb-4 animate-fade-in">

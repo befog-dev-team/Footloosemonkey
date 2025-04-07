@@ -25,14 +25,14 @@ const PricingPlans = () => {
                     {/* Young Category Plan */}
                     <div className="w-80 bg-[bisque] rounded-xl p-6 flex flex-col shadow-md">
                         <div className="text-left mb-4">
-                            <p className="font-semibold text-gray-800">Age below 18</p>
-                            <h3 className="text-xl font-bold">Young Stars</h3>
+                            <p className="font-semibold text-gray-800">Age (5-12 years)</p>
+                            <h3 className="text-xl font-bold">Kid Stars</h3>
                         </div>
                         <p className="text-sm text-gray-600 mb-6">
                             Perfect for kids and teens eager to showcase their unique talent solo.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹199<span className="text-sm font-normal text-gray-700"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹199 <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
@@ -72,14 +72,15 @@ const PricingPlans = () => {
                     <div className="w-80 bg-blue-900 text-white rounded-xl p-6 flex flex-col shadow-xl relative">
                         <div className="absolute flex justify-center items-center top-4 w-[98px] h-[40px] right-4 bg-white text-blue-700 text-[14px] rounded-[10px] font-semibold">Popular</div>
                         <div className="text-left mb-4">
-                            <p className="font-semibold text-white/80">3 or more performers</p>
+                            <p className="font-semibold text-white/90">Any Age</p>
+                            <p className="text-xs text-white/90">2 to 5 performers</p>
                             <h3 className="text-xl font-bold">Group Talent</h3>
                         </div>
                         <p className="text-sm text-white/70 mb-6">
                             Best suited for dance crews, bands, or creative team performances.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹499<span className="text-sm font-normal text-white/70"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹499 <span className="text-sm font-normal text-white/70">+GST</span> <span className="text-sm font-normal text-white/70"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
@@ -115,17 +116,17 @@ const PricingPlans = () => {
                         </Link>
                     </div>
 
-                    {/* Adult Category Plan */}
+                    {/* Teenager Category Plan */}
                     <div className="w-80 bg-[bisque] rounded-xl p-6 flex flex-col shadow-md">
                         <div className="text-left mb-4">
-                            <p className="font-semibold text-gray-800">Age 18 & above</p>
-                            <h3 className="text-xl font-bold">Adult Performers</h3>
+                            <p className="font-semibold text-gray-800">Age (13-19 years)</p>
+                            <h3 className="text-xl font-bold">Teenager Performers</h3>
                         </div>
                         <p className="text-sm text-gray-600 mb-6">
                             Individual entries for adults with talents ready to shine.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹299<span className="text-sm font-normal text-gray-700"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹299 <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
