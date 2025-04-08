@@ -126,7 +126,7 @@ const PricingPlans = ({ groupACharge, groupBCharge, groupCCharge }) => {
                             Individual entries for adults with talents ready to shine.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹{groupCCharge} <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹{groupBCharge} <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">

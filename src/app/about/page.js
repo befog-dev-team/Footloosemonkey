@@ -1,8 +1,55 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
 import PricingPlans from '../../components/home/PricingPlans';
+import { useEffect, useState } from 'react';
+import { getAdminData } from '../services';
 
 export default function AboutUs() {
+    const [competition, setCompetition] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    const [offerCharge, setOfferCharge] = useState(0);
+    const [groupACharge, setGroupACharge] = useState(0);
+    const [groupBCharge, setGroupBCharge] = useState(0);
+    const [groupCCharge, setGroupCCharge] = useState(0);
+
+    useEffect(() => {
+        const fetchAdminData = async () => {
+            try {
+                const response = await getAdminData();
+                if (response.success && response.data?.[0]) {
+                    const data = response.data[0];
+                    setCompetition(data.talent?.toLowerCase() || '');
+                    setGroupACharge(Number(data.groupACharge) || 0);
+                    setGroupBCharge(Number(data.groupBCharge) || 0);
+                    setGroupCCharge(Number(data.groupCCharge) || 0);
+                    setOfferCharge(Number(data.offerCharge) || 0);
+                } else {
+                    console.error('Error fetching admin data:', response.message);
+                }
+            } catch (error) {
+                console.error('Error fetching admin data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAdminData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-white">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-blue-500 font-medium text-lg">Loading, please wait...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="bg-[aliceblue] min-h-screen">
             <div className="container mx-auto px-4 md:px-6 py-16">
@@ -73,7 +120,11 @@ export default function AboutUs() {
                 </div>
 
                 {/* Pricing Section */}
-                <PricingPlans />
+                <PricingPlans
+                    groupACharge={groupACharge}
+                    groupBCharge={groupBCharge}
+                    groupCCharge={groupCCharge}
+                />
 
                 {/* CTA Section */}
                 <div className="text-center mt-24">
