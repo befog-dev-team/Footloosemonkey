@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-const PricingPlans = () => {
+const PricingPlans = ({ groupACharge, groupBCharge, groupCCharge }) => {
     return (
         <div className='bg-[aliceblue]'>
             <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8 ">
@@ -32,7 +32,7 @@ const PricingPlans = () => {
                             Perfect for kids and teens eager to showcase their unique talent solo.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹199 <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹{groupACharge} <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
@@ -80,7 +80,7 @@ const PricingPlans = () => {
                             Best suited for dance crews, bands, or creative team performances.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹499 <span className="text-sm font-normal text-white/70">+GST</span> <span className="text-sm font-normal text-white/70"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹{groupCCharge} <span className="text-sm font-normal text-white/70">+GST</span> <span className="text-sm font-normal text-white/70"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
@@ -126,7 +126,7 @@ const PricingPlans = () => {
                             Individual entries for adults with talents ready to shine.
                         </p>
                         <div className="text-left mb-6">
-                            <p className="text-[54px] font-bold">₹299 <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
+                            <p className="text-[54px] font-bold">₹{groupCCharge} <span className="text-sm font-normal text-gray-700">+GST</span> <span className="text-sm font-normal text-gray-700"> /user</span></p>
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">

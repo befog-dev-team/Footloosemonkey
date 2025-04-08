@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { addAdminData, getAdminData } from '../../../app/services/index';
 
-const chargeOptions = [0, 9, 49, 99, 149, 199, 249, 299, 349, 399];
+const chargeOptions = [0, 9, 49, 99, 149, 199, 249, 299, 349, 399, 499, 599, 699, 799, 899, 999];
 
 export default function AdminPage() {
     const [formData, setFormData] = useState({

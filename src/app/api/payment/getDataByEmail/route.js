@@ -1,4 +1,3 @@
-import connectToDB from "../../../db/connectToDB";
 import Payment from "../../../models/Payment";
 import { NextResponse } from "next/server";
 
@@ -6,8 +5,6 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
     try {
-        await connectToDB();
-
         // Get the email from the query parameters
         const { searchParams } = new URL(req.url);
         const email = searchParams.get("email");

@@ -1,4 +1,3 @@
-import connectToDB from "../../../db/connectToDB";
 import Payment from "../../../models/Payment";
 import { NextResponse } from "next/server";
 
@@ -6,8 +5,6 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
     try {
-        await connectToDB();
-
         // Extract data from the request body
         const { email, name, ageCriteria, age, guardianNumber, address, talent, charge, isPaid, paymentId, status } = await req.json();
 
