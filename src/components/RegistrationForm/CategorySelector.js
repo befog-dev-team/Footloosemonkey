@@ -3,9 +3,9 @@ import React from "react";
 
 const CategorySelector = ({ value, onChange, error }) => {
     const categories = [
-        { value: "Kid", label: "Kid (5-12 years)", pricing: "Group A Pricing" },
-        { value: "Teenage", label: "Teenage (13-19 years)", pricing: "Group B Pricing" },
-        { value: "Group", label: "Group (2-5 members, any age)", pricing: "Group C Pricing" }
+        { value: "Kid", label: "Kid (5-12 years)" },
+        { value: "Teenage", label: "Teenage (13-19 years)" },
+        { value: "Group", label: "Group (2-5 members, any age)" }
     ];
 
     return (
@@ -20,7 +20,7 @@ const CategorySelector = ({ value, onChange, error }) => {
                 <option value="">Select Category</option>
                 {categories.map((category) => (
                     <option key={category.value} value={category.value}>
-                        {category.label} - {category.pricing}
+                        {category.label}
                     </option>
                 ))}
             </select>

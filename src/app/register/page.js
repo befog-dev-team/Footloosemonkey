@@ -225,11 +225,16 @@ const RegisterForm = () => {
 
     if (!values.category) errors.category = "Category is required";
 
-    // Age validation based on category
-    if (values.category === "Kid" && (values.age < 5 || values.age > 12)) {
-      errors.age = "Kid category requires age 5-12";
-    } else if (values.category === "Teenage" && (values.age < 13 || values.age > 19)) {
-      errors.age = "Teenage category requires age 13-19";
+    if (!isGroup) {
+      if (values.category === "Kid" && (values.age < 5 || values.age > 12)) {
+        errors.age = "Kid category requires age 5-12";
+      } else if (values.category === "Teenage" && (values.age < 13 || values.age > 19)) {
+        errors.age = "Teenage category requires age 13-19";
+      }
+
+      if (!values.age) {
+        errors.age = "Age is required";
+      }
     }
 
     if (isGroup) {
@@ -285,7 +290,7 @@ const RegisterForm = () => {
       });
     } else {
       formData.append('Email', values.email);
-      formData.append('name', values.name);
+      formData.append('Name', values.name);
       formData.append('Age', values.age);
     }
 
