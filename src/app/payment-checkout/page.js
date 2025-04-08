@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useRef, useEffect, use } from 'react';
 import { addPaymentData } from '../services/index';
 import { Loader } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import axios from 'axios';
 
 const PaymentCheckout = () => {
@@ -138,8 +138,7 @@ const PaymentCheckout = () => {
       setIsPaid(false);
 
       // Make API call to the server for Razorpay order
-      const data = await fetch('/api/razorpay', {
-        method: 'POST',
+      const data = await axios.post('/api/payment', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -165,16 +164,15 @@ const PaymentCheckout = () => {
         order_id: order.id,
         image: '/logo.png',
         handler: async function (response) {
-          const verifyData = await fetch('/api/paymentverify', {
-            method: "POST",
-            body: JSON.stringify({
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature,
-            }),
+          const verifyData = await axios.post('/api/payment/verify', {
             headers: {
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: order.id,
+              razorpay_signature: response.razorpay_signature,
+            }),
           });
 
           if (!verifyData.ok) {
@@ -238,8 +236,7 @@ const PaymentCheckout = () => {
   // Handle send mail of participant credentials
   const sendMail = async (userPaymentID) => {
     try {
-      const res = await fetch('/api/sendmailcredentials', {
-        method: 'POST',
+      const res = await axios.post('/api/send-mail', {
         headers: {
           'Content-Type': 'application/json',
         },

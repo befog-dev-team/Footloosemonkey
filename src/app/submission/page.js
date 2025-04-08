@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Loader } from 'lucide-react';
 

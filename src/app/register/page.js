@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Cookies from 'js-cookie';
 import CategorySelector from "../../components/RegistrationForm/CategorySelector";
 import IndividualDetails from "../../components/RegistrationForm/IndividualDetails";
@@ -11,6 +11,7 @@ import TalentSelector from "../../components/RegistrationForm/TalentSelector";
 import AddressInput from "../../components/RegistrationForm/AddressInput";
 import TermsAndConditions from "../../components/RegistrationForm/TermsAndConditions";
 import { addRegistrationData, getAdminData } from "../services";
+import axios from "axios";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -117,10 +118,11 @@ const RegisterForm = () => {
 
   const fetchAddressFromLocation = async (latitude, longitude) => {
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
-      );
-      const data = await response.json();
+      const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+      if (!response.data) {
+        toast.error("Unable to retrieve address. Please try again.");
+        return;
+      }
 
       if (response.ok) {
         setValues(prev => ({ ...prev, address: data.display_name }));
@@ -227,9 +229,10 @@ const RegisterForm = () => {
     formData.append('Time', formattedTime);
 
     try {
-      const response = await fetch(scriptURL, {
-        method: 'POST',
-        body: formData
+      const response = await axios.post(scriptURL, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       if (!response.ok) {

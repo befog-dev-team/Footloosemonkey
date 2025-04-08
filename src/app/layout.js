@@ -3,8 +3,7 @@ import "./globals.css";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import Script from 'next/script';
-import { ToastContainer, Bounce } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from 'react-hot-toast';
 import Adsense from "../components/Adsense";
 import AdSense from "../components/Adsense";
 
@@ -131,20 +130,7 @@ export default function RootLayout({ children }) {
           ></iframe>
         </noscript> */}
 
-        {/*  Toastify Container */}
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
+        <Toaster />
         <Navbar />
         {/* Adsense Component */}
         <AdSense />

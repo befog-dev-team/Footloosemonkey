@@ -1,31 +1,30 @@
-import connectToDB from "../../../db/connectToDB";
-import Admin from "../../../models/Admin";
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
-export async function GET(req) {
+export async function GET() {
     try {
-        await connectToDB();
-        const extractData = await Admin.find();
-        if (extractData) {
-            return NextResponse.json({
-                success: true,
-                data: extractData
-            })
-        }
-        else {
-            return NextResponse.json({
-                success: false,
-                message: "Something goes wrong! Please try again."
-            })
-        }
-    } catch (e) {
-        console.log(e)
+        const adminData = await prisma.adminData.findMany({
+            select: {
+                id: true,
+                talent: true,
+                individualFee: true,
+                groupAFee: true,
+                groupBFee: true,
+                groupCFee: true
+            }
+        });
 
         return NextResponse.json({
+            success: true,
+            data: adminData
+        });
+    } catch (error) {
+        console.error("Error fetching admin data:", error);
+        return NextResponse.json({
             success: false,
-            message: 'Something went wrong! Please try again.'
-        })
+            message: "Failed to fetch admin data"
+        }, { status: 500 });
     }
 }

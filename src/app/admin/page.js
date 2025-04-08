@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import AdminHomeView from '../../components/admin-view/home'
 import { login } from '../services/index'
 import Login from '../../components/admin-view/login'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 
 const initialLoginFormData = {
     username: '',

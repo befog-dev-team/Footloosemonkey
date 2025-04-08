@@ -1,212 +1,147 @@
+import axios from 'axios';
+
 // Service for Admin
 export async function addAdminData(formData) {
     try {
-        const response = await fetch(`/api/admin/add`, {
-            method: 'POST',
+        const response = await axios.post('/api/admin/add', formData, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            }
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error adding data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in addData: ${e.message}`);
-        return { success: false, message: e.message };
+        return response.data;
+    } catch (error) {
+        console.error(`Error adding data: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || 'Unknown error'
+        };
     }
 }
 
-export async function getAdminData() {
+export const getAdminData = async () => {
     try {
-        const response = await fetch(`/api/admin/get`, {
-            method: 'GET'
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error getting data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in getAdminData: ${e.message}`);
-        return { success: false, message: e.message };
+        const response = await axios.get('/api/admin/get');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching admin data:', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
-}
+};
 
-// CRUD Operation for get, add, update and delete for Admin
-
+// CRUD Operations for get, add, update and delete for Admin
 export async function login(formData) {
     try {
-        const response = await fetch(`/api/admin`, {
-            method: 'POST',
+        const response = await axios.post('/api/admin', formData, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            }
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error logging in: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in login: ${e.message}`);
-        return { success: false, message: e.message };
+        return response.data;
+    } catch (error) {
+        console.error(`Error logging in: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
 }
 
 export async function addData(currentTab, formData) {
     try {
-        const response = await fetch(`/api/${currentTab}/add`, {
-            method: 'POST',
+        const response = await axios.post(`/api/${currentTab}/add`, formData, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            }
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error adding data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        console.log(result)
-        return result;
-    } catch (e) {
-        console.error(`Error in addData: ${e.message}`);
-        return { success: false, message: e.message };
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(`Error adding data: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
 }
 
 export async function getData(currentTab) {
     try {
-        const response = await fetch(`/${currentTab}/get`, {
-            method: 'GET'
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error getting data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in getData: ${e.message}`);
-        return { success: false, message: e.message };
+        const response = await axios.get(`/api/${currentTab}/get`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error getting data: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
 }
 
 export async function updateData(currentTab, formData) {
     try {
-        const response = await fetch(`/api/${currentTab}/update`, {
-            method: 'PUT',
+        const response = await axios.put(`/api/${currentTab}/update`, formData, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            }
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error updating data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in updateData: ${e.message}`);
-        return { success: false, message: e.message };
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating data: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
 }
 
 // Service for Registration
-export async function addRegistrationData(formData) {
+export const addRegistrationData = async (data) => {
     try {
-        const response = await fetch(`/api/registration/add`, {
-            method: 'POST',
+        const response = await axios.post('/api/register', data, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            }
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error adding data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in addData: ${e.message}`);
-        return { success: false, message: e.message };
+        return response.data;
+    } catch (error) {
+        console.error('Error submitting registration:', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
-}
+};
 
 export async function getRegistrationData() {
     try {
-        const response = await fetch(`/api/registration/get`, {
-            method: 'GET'
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error getting data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in getRegistrationData: ${e.message}`);
-        return { success: false, message: e.message };
+        const response = await axios.get('/api/registration/get');
+        return response.data;
+    } catch (error) {
+        console.error(`Error getting data: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
 }
-
 
 // Service for Payments
-
 export async function addPaymentData(formData) {
     try {
-        const response = await fetch(`/api/payment/add`, {
-            method: 'POST',
+        const response = await axios.post('/api/payment/add', formData, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            }
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Error adding data: ${errorData.message || 'Unknown error'}`);
-            return { success: false, message: errorData.message || 'Unknown error' };
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (e) {
-        console.error(`Error in addData: ${e.message}`);
-        return { success: false, message: e.message };
+        return response.data;
+    } catch (error) {
+        console.error(`Error adding data: ${error.response?.data?.message || error.message}`);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.message
+        };
     }
 }
-

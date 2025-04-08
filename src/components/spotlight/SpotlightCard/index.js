@@ -89,10 +89,14 @@ const VideoCard = ({ video }) => {
         setVoting(true); // Set loading to prevent further clicks
 
         try {
-            const response = await fetch('/api/vote', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, submissionId: videoId })
+            const response = await axios.post('/api/vote', {
+                userId,
+                videoId,
+                isVoted: !isVoted // Toggle vote state
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
             const result = await response.json();
 

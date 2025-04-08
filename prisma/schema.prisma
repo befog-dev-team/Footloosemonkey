@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,40 +10,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminData {
+  id            String   @id @default(uuid())
+  talent        String   @unique
+  individualFee String
+  groupAFee     String
+  groupBFee     String
+  groupCFee     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Registration {
+  id               String   @id @default(uuid())
+  category         String
+  groupName        String?
+  email            String?
+  name             String?
+  age              Int?
+  guardianNumber   String
+  address          String
+  talent           String
+  charges          String
+  videoSharing     Boolean
+  offensiveContent Boolean
+  incident         Boolean
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  members Member[]
+}
+
+model Member {
+  id             String       @id @default(uuid())
+  name           String
+  email          String
+  registrationId String
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+}
+
+model Participant {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  age       String
+  address   String
+  number    String
+  talent    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submissions Submission[]
+  payments    Payment[]
+}
+
+model Payment {
+  id            String      @id @default(uuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id])
+  amount        Float
+  paymentStatus String
+  paymentID     String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
 model Submission {
-  id                       String   @id @default(cuid())
-  publicId                 String   @unique
-  participantId            String
-  name          String
-  participantEmail         String
-  age           String
-  ageCriteria   String
-  partcipantAddress        String
-  participantNumber        String
-  participantCharge        String
-  participantPaymentID     String
-  participantPaymentStatus String
-  profilepic               String
-  video                    String
-  participantTalent        String
-  postTitle                String
-  description              String
-  duration                 Float
-  originalSize             String
-  compressedSize           String
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @updatedAt
-  voteCount                Int      @default(0)
-  Vote                     Vote[]
+  id             String      @id @default(cuid())
+  publicId       String      @unique
+  participantId  String
+  participant    Participant @relation(fields: [participantId], references: [id])
+  postTitle      String
+  description    String
+  video          String
+  profilepic     String
+  duration       Float
+  ageCriteria    String
+  originalSize   String
+  compressedSize String
+  voteCount      Int         @default(0)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  Vote Vote[]
 }
 
 model Vote {
   id           String   @id @default(uuid())
-  userId       String // User's ID
-  submissionId String   @map("submission_id") // ID of the voted video (Submission)
+  userId       String
+  submissionId String   @map("submission_id")
   createdAt    DateTime @default(now())
 
   submission Submission @relation(fields: [submissionId], references: [id])
 
-  @@unique([userId, submissionId]) // Ensure each user can only vote once per video
+  @@unique([userId, submissionId])
 }

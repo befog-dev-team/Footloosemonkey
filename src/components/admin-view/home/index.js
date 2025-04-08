@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { addAdminData, getAdminData } from '../../../app/services/index';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 export default function AdminPage() {
     const [selectedTalent, setSelectedTalent] = useState('');

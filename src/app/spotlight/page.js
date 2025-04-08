@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import SpotlightCard from '../../components/spotlight/SpotlightCard';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 export default function Spotlight() {
   const [searchInput, setSearchInput] = useState("");
