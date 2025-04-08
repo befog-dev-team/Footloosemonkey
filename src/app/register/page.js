@@ -40,6 +40,8 @@ const RegisterForm = () => {
   const [talentOptions, setTalentOptions] = useState([]);
   const [calculatedCharge, setCalculatedCharge] = useState(0);
 
+  const [isLocating, setIsLocating] = useState(false);
+
   const isGroup = values.category === "Group";
 
   useEffect(() => {
@@ -182,11 +184,10 @@ const RegisterForm = () => {
 
   const fetchAddressFromLocation = async (latitude, longitude) => {
     try {
-      const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
-      if (!response.data) {
-        toast.error("Unable to retrieve address. Please try again.");
-        return;
-      }
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+      );
+      const data = await response.json();
 
       if (response.ok) {
         setValues(prev => ({ ...prev, address: data.display_name }));
@@ -444,6 +445,7 @@ const RegisterForm = () => {
           <AddressInput
             value={values.address}
             onChange={handleChange}
+            onLocateClick={handleLocationClick}
             error={errors.address}
           />
 
