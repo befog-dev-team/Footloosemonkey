@@ -19,14 +19,14 @@ model Admin {
 }
 
 model AdminData {
-  id            String   @id @default(uuid())
-  talent        String   @unique
-  individualFee String
-  groupAFee     String
-  groupBFee     String
-  groupCFee     String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(uuid())
+  talent       String?  @unique
+  offerCharge  String?
+  groupACharge String?
+  groupBCharge String?
+  groupCCharge String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Registration {
