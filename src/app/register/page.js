@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
@@ -11,6 +12,7 @@ import TalentSelector from "../../components/RegistrationForm/TalentSelector";
 import AddressInput from "../../components/RegistrationForm/AddressInput";
 import TermsAndConditions from "../../components/RegistrationForm/TermsAndConditions";
 import { addRegistrationData, getAdminData } from "../services";
+import { getAgeGroup } from "../../lib/utils";
 import axios from "axios";
 
 const RegisterForm = () => {
@@ -24,7 +26,7 @@ const RegisterForm = () => {
     guardianNumber: "",
     address: "",
     talent: "",
-    members: [{ name: "", email: "" }],
+    members: [{ name: "", email: "", age: "" }],
     termsAccepted: {
       videoSharing: false,
       offensiveContent: false,
@@ -35,9 +37,8 @@ const RegisterForm = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [options, setOptions] = useState([]);
-  const [charges, setCharges] = useState('');
-  const [isLocating, setIsLocating] = useState(false);
+  const [talentOptions, setTalentOptions] = useState([]);
+  const [calculatedCharge, setCalculatedCharge] = useState(0);
 
   const isGroup = values.category === "Group";
 
@@ -46,7 +47,7 @@ const RegisterForm = () => {
       try {
         const response = await getAdminData();
         if (response.success && response.data) {
-          setOptions(response.data);
+          setTalentOptions(response.data);
         }
       } catch (error) {
         console.error("Error fetching admin data:", error);
@@ -54,6 +55,37 @@ const RegisterForm = () => {
     };
     fetchData();
   }, []);
+
+  // Calculate charge based on category and age
+  useEffect(() => {
+    if (values.talent && values.category) {
+      const talentData = talentOptions.find(t => t.talent === values.talent);
+      if (talentData) {
+        let charge = 0;
+
+        switch (values.category) {
+          case "Kid":
+            charge = talentData.groupACharge || 0;
+            break;
+          case "Teenage":
+            charge = talentData.groupBCharge || 0;
+            break;
+          case "Group":
+            charge = talentData.groupCCharge || 0;
+            break;
+          default:
+            charge = 0;
+        }
+
+        // Apply offer if available
+        if (talentData.isOfferActive && talentData.offerCharge) {
+          charge = talentData.offerCharge;
+        }
+
+        setCalculatedCharge(charge);
+      }
+    }
+  }, [values.talent, values.category, talentOptions]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -74,6 +106,27 @@ const RegisterForm = () => {
 
     const mappedName = nameMapping[name];
 
+    if (name === "Category") {
+      setValues(prev => ({
+        ...prev,
+        [name.toLowerCase()]: value,
+        // Reset age when category changes
+        age: "",
+        // Reset group-related fields when switching away from Group
+        ...(value !== "Group" && {
+          groupName: "",
+          members: [{ name: "", email: "", age: "" }]
+        }),
+        // Reset individual fields when switching to Group
+        ...(value === "Group" && {
+          email: "",
+          name: "",
+          age: ""
+        })
+      }));
+      return;
+    }
+
     if (type === "checkbox") {
       setValues(prev => ({
         ...prev,
@@ -83,10 +136,21 @@ const RegisterForm = () => {
         },
       }));
     } else if (mappedName === "category") {
+      // Simplified category change handler
       setValues(prev => ({
         ...prev,
-        category: value,
-        ...(value !== "Group" && { groupName: "", members: [{ name: "", email: "" }] })
+        [mappedName]: value,
+        // Reset group-related fields when switching away from Group
+        ...(value !== "Group" && {
+          groupName: "",
+          members: [{ name: "", email: "", age: "" }]
+        }),
+        // Reset individual fields when switching to Group
+        ...(value === "Group" && {
+          email: "",
+          name: "",
+          age: ""
+        })
       }));
     } else {
       setValues(prev => ({ ...prev, [mappedName]: value }));
@@ -103,7 +167,7 @@ const RegisterForm = () => {
     if (values.members.length < 5) {
       setValues(prev => ({
         ...prev,
-        members: [...prev.members, { name: "", email: "" }]
+        members: [...prev.members, { name: "", email: "", age: "" }]
       }));
     }
   };
@@ -160,6 +224,13 @@ const RegisterForm = () => {
 
     if (!values.category) errors.category = "Category is required";
 
+    // Age validation based on category
+    if (values.category === "Kid" && (values.age < 5 || values.age > 12)) {
+      errors.age = "Kid category requires age 5-12";
+    } else if (values.category === "Teenage" && (values.age < 13 || values.age > 19)) {
+      errors.age = "Teenage category requires age 13-19";
+    }
+
     if (isGroup) {
       if (!values.groupName) errors.groupName = "Group name is required";
       if (values.members.length < 2) errors.members = "At least 2 members required";
@@ -168,6 +239,7 @@ const RegisterForm = () => {
       values.members.forEach((member, index) => {
         if (!member.name) errors[`memberName_${index}`] = "Member name is required";
         if (!member.email) errors[`memberEmail_${index}`] = "Member email is required";
+        if (!member.age) errors[`memberAge_${index}`] = "Member age is required";
       });
     } else {
       if (!values.email) errors.email = "Email is required";
@@ -219,7 +291,7 @@ const RegisterForm = () => {
     formData.append('GuardianNumber', values.guardianNumber);
     formData.append('Address', values.address);
     formData.append('Talent', values.talent);
-    formData.append('Charge', charges);
+    formData.append('Charge', calculatedCharge);
 
     // Add date and time
     const today = new Date();
@@ -235,7 +307,7 @@ const RegisterForm = () => {
         },
       });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Failed to submit to Google Sheets');
       }
       return true;
@@ -259,14 +331,12 @@ const RegisterForm = () => {
     setIsSubmitting(true);
 
     try {
-      // First submit to Google Sheets
       const googleSheetSuccess = await handleSubmitGoogleForm();
 
       if (!googleSheetSuccess) {
         throw new Error('Google Sheet submission failed');
       }
 
-      // Then proceed with your existing registration flow
       const response = await addRegistrationData({
         category: values.category,
         groupName: isGroup ? values.groupName : null,
@@ -277,7 +347,7 @@ const RegisterForm = () => {
         address: values.address,
         talent: values.talent,
         members: isGroup ? values.members : null,
-        charges: charges,
+        charges: calculatedCharge,
         termsAccepted: values.termsAccepted,
       });
 
@@ -286,7 +356,7 @@ const RegisterForm = () => {
         const paymentData = {
           category: values.category,
           talent: values.talent,
-          charges: charges,
+          charges: calculatedCharge,
           guardianNumber: values.guardianNumber,
           address: values.address,
           ...(isGroup ? {
@@ -355,7 +425,7 @@ const RegisterForm = () => {
           <TalentSelector
             value={values.talent}
             onChange={handleChange}
-            options={options}
+            options={talentOptions}
             error={errors.talent}
           />
 
@@ -374,9 +444,23 @@ const RegisterForm = () => {
           <AddressInput
             value={values.address}
             onChange={handleChange}
-            onLocateClick={handleLocationClick}
             error={errors.address}
           />
+
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium mb-2">Registration Fee</h3>
+            <p className="text-lg font-semibold">
+              ₹ {calculatedCharge}
+              {talentOptions.find(t => t.talent === values.talent)?.isOfferActive && (
+                <span className="ml-2 text-sm text-green-600">(Special Offer Applied)</span>
+              )}
+            </p>
+            <p className="text-sm text-gray-500 mt-1">
+              {isGroup ?
+                "Group Category (Group C Pricing)" :
+                values.age ? `Individual (${getAgeGroup(values.age)})` : ''}
+            </p>
+          </div>
 
           <TermsAndConditions
             termsAccepted={values.termsAccepted}
