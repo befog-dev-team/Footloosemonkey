@@ -19,7 +19,7 @@ export async function POST(request) {
                 guardianNumber: data.guardianNumber,
                 address: data.address,
                 talent: data.talent,
-                charges: data.charges,
+                charge: data.charge,
                 videoSharing: data.termsAccepted.videoSharing,
                 offensiveContent: data.termsAccepted.offensiveContent,
                 incident: data.termsAccepted.incident,

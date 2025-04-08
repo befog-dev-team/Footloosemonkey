@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useState, useRef, useEffect, use } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { addPaymentData } from '../services/index';
 import { Loader } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -13,121 +13,157 @@ const PaymentCheckout = () => {
   const formRef = useRef(null);
 
   const [paymentStatus, setPaymentStatus] = useState(true);
-  const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userTalent, setUserTalent] = useState('');
-  const [userAgeCriteria, setUserAgeCriteria] = useState('');
-  const [userage, setUserage] = useState('');
-  const [userContact, setUserContact] = useState('');
-  const [userAddress, setUserAddress] = useState('');
-  const [charge, setCharge] = useState('');
+  const [userData, setUserData] = useState({
+    category: '',
+    email: '',
+    name: '',
+    talent: '',
+    age: '',
+    guardianNumber: '',
+    address: '',
+    charge: 0,
+    groupName: '',
+    memberCount: 0
+  });
   const [userPaymentId, setUserPaymentId] = useState('');
   const [isPaid, setIsPaid] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Load data 
   useEffect(() => {
     const fetchRegistrationData = async () => {
       try {
-        const paymentResponse = await axios.get('/api/payment/get');
-
         // Get query params from URL
         const params = new URLSearchParams(window.location.search);
+        const dataParam = params.get('data');
 
-        // Set user data
-        setUserEmail(params.get('email') || '');
-        setUserName(params.get('name') || '');
-        setUserTalent(params.get('talent') || '');
-        setUserAgeCriteria(params.get('ageCriteria') || '');
-        setUserage(params.get('age') || '');
-        setUserContact(params.get('guardianNumber') || '');
-        setUserAddress(params.get('address') || '');
-        setCharge(params.get('charge') || '');
+        if (dataParam) {
+          const parsedData = JSON.parse(decodeURIComponent(dataParam));
+          setUserData(parsedData);
 
-        // Check if payment is already completed
-        const payment = paymentResponse.data.data.find(
-          (p) => p.email === params.get('email') && p.guardianNumber === params.get('guardianNumber')
-        );
+          // Check if payment is already completed
+          const paymentResponse = await axios.get('/api/payment/get');
+          console.log('Payment Response:', paymentResponse.data);
+          const payment = paymentResponse.data.data.find(
+            (p) => p.guardianNumber === parsedData.guardianNumber
+          );
 
-        if (payment) setIsPaid(true);
-
+          if (payment) {
+            setIsPaid(true);
+            setUserPaymentId(payment.paymentId);
+          }
+        }
       } catch (error) {
         console.error('Error fetching data:', error.message);
         toast.error('Something went wrong, Please try again later.');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRegistrationData();
   }, []);
 
+  // console.log('User Data:', userData);
+
   // Calculate IGST and CGST
   const igstRate = 9, cgstRate = 9;
-  const igstAmount = (charge * igstRate) / 100;
-  const cgstAmount = (charge * cgstRate) / 100;
-  const totalAmount = Number(charge) + igstAmount + cgstAmount;
+  const igstAmount = (userData.charge * igstRate) / 100;
+  const cgstAmount = (userData.charge * cgstRate) / 100;
+  const totalAmount = Number(userData.charge) + igstAmount + cgstAmount;
   const totalIncludingGST = Number(totalAmount.toFixed(2));
   const razorpayCharge = Math.floor(totalIncludingGST);
 
-  // Handle payment data
+  // Get age group based on category or age
+  const getAgeGroup = () => {
+    if (userData.category === 'Kid') return '5-12';
+    if (userData.category === 'Teenage') return '13-19';
+    if (userData.category === 'Group') return 'Group';
+
+    // Fallback if category not set but age is available
+    if (userData.age) {
+      const age = parseInt(userData.age);
+      if (age >= 5 && age <= 12) return '5-12';
+      if (age >= 13 && age <= 19) return '13-19';
+    }
+
+    return 'N/A';
+  };
+
+  // Handle payment data submission
   const handlePaymentData = async (paymentId, status) => {
     const paymentData = {
-      email: userEmail,
-      name: userName,
-      guardianNumber: userContact,
-      address: userAddress,
-      charge: charge,
-      talent: userTalent,
-      ageCriteria: userAgeCriteria,
-      age: userage,
-      isPaid: true,
+      email: userData.email,
+      name: userData.name,
+      guardianNumber: userData.guardianNumber,
+      address: userData.address,
+      charge: userData.charge,
+      talent: userData.talent,
+      ageCriteria: getAgeGroup(),
+      age: userData.age,
+      isPaid: status === 'success',
       paymentId: paymentId,
       status: status,
+      ...(userData.category === 'Group' && {
+        groupName: userData.groupName,
+        memberCount: userData.memberCount
+      })
     };
 
-    const response = await addPaymentData(paymentData);
-    if (response.success) {
-      toast.success("Payment Successful!");
-    } else {
-      console.error("Payment Failed:", response.message);
-      toast.error("Payment Failed. Please try again later.");
+    try {
+      const response = await addPaymentData(paymentData);
+      if (response.success) {
+        toast.success("Payment Successful!");
+        return true;
+      } else {
+        console.error("Payment Failed:", response.message);
+        toast.error("Payment Failed. Please try again later.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error submitting payment:", error);
+      toast.error("Error processing payment. Please try again.");
+      return false;
     }
   };
 
   // Razorpay Payment Gateway Integration or Handle Free Payment
   const initiatePayment = async () => {
     try {
-      if (charge == 0) {
+      // Handle free payment case
+      if (userData.charge == 0) {
         setPaymentStatus(false);
-        setIsPaid(false)
-        const dummyPaymentId = `pay_${Math.random().toString(36).substring(2, 10)}`;
+        setIsPaid(false);
+
+        const dummyPaymentId = `free_${Math.random().toString(36).substring(2, 10)}`;
         setUserPaymentId(dummyPaymentId);
-        await handlePaymentData(dummyPaymentId, 'success');
 
-        setTimeout(() => {
-          toast.success("You availed the Diwali offer successfully!",
-            { autoClose: false })
-        }, 1000);
+        const paymentSuccess = await handlePaymentData(dummyPaymentId, 'success');
 
-        setTimeout(() => {
+        if (paymentSuccess) {
+          toast.success("You availed the free registration successfully!",
+            { autoClose: false });
+
+          // Send confirmation email
+          await sendMail(dummyPaymentId);
+
+          // Copy the Payment ID to clipboard
+          await navigator.clipboard.writeText(dummyPaymentId);
+
           toast.success(
-            `Payment successful! Your Token ID = ${dummyPaymentId} has been processed.`,
+            `Registration successful! Your Token ID = ${dummyPaymentId} has been processed.`,
             { autoClose: false }
           );
-        }, 2000);
 
-        // Send mail to the user
-        await sendMail(dummyPaymentId)
+          toast.success(
+            `Your Token ID has been copied to your clipboard. Please keep it safe!`,
+            { autoClose: false }
+          );
 
-        // Copy the Payment ID to clipboard
-        await navigator.clipboard.writeText(dummyPaymentId);
-
-        setTimeout(() => {
-          toast.info(`Your Token ID has been copied to your clipboard. Please keep it safe!`, { autoClose: false }
-          )
-        }, 3000);
-
-        setTimeout(() => {
-          router.push('/verifyuser');
-        }, 4000);
+          setTimeout(() => {
+            router.push('/verifyuser');
+          }, 3000);
+        }
 
         setPaymentStatus(true);
         setIsPaid(true);
@@ -138,78 +174,62 @@ const PaymentCheckout = () => {
       setIsPaid(false);
 
       // Make API call to the server for Razorpay order
-      const data = await axios.post('/api/payment', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount: razorpayCharge * 100 }), // Send charge in paisa
+      const response = await axios.post('/api/payment/orders', {
+        amount: razorpayCharge * 100 // Convert to paisa
       });
 
-      if (!data.ok) {
-        console.error('Failed to fetch Razorpay order:', data.statusText);
-        toast.error('Failed to fetch Razorpay order. Please try again later.');
-        setPaymentStatus(true); // Re-enable the button if there's an error fetching the order
-        setIsPaid(true);
-        return;
-      }
-
-      const { order } = await data.json();
+      const { order } = response.data;
 
       const options = {
-        key: process.env.RAZORPAY_API_KEY,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         name: "Footloosemonkey",
-        amount: razorpayCharge * 100, // Dynamic amount in paisa
+        amount: order.amount,
         currency: "INR",
         description: "Payment for Registration",
         order_id: order.id,
         image: '/logo.png',
         handler: async function (response) {
-          const verifyData = await axios.post('/api/payment/verify', {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+          try {
+            const verificationResponse = await axios.post('/api/payment/verify', {
               razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: order.id,
+              razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
-            }),
-          });
+            });
 
-          if (!verifyData.ok) {
-            console.error('Failed to verify payment:', verifyData.statusText);
-            toast.error('Failed to verify payment. Please try again later.');
+            if (verificationResponse.data.success) {
+              toast.success(
+                `Payment successful! Your Token ID = ${response.razorpay_payment_id} has been processed.`,
+                { autoClose: false }
+              );
+
+              // Save payment data
+              const paymentSuccess = await handlePaymentData(response.razorpay_payment_id, 'success');
+
+              if (paymentSuccess) {
+                // Send confirmation email
+                await sendMail(response.razorpay_payment_id);
+
+                // Copy the Payment ID to clipboard
+                await navigator.clipboard.writeText(response.razorpay_payment_id);
+
+                toast.success(
+                  `Your Token ID has been copied to your clipboard. Please keep it safe!`,
+                  { autoClose: false }
+                );
+
+                setTimeout(() => {
+                  router.push('/verifyuser');
+                }, 3000);
+              }
+            } else {
+              await handlePaymentData(response.razorpay_payment_id, 'failed');
+              toast.error('Payment verification failed. Please contact support.');
+            }
+          } catch (error) {
+            console.error('Error verifying payment:', error);
             await handlePaymentData(response.razorpay_payment_id, 'failed');
-            setPaymentStatus(true);
-            setIsPaid(true);
-            return;
-          }
-
-          const res = await verifyData.json();
-          if (res?.message === "success") {
-            toast.success(
-              `Payment successful! Your Token ID = ${response.razorpay_payment_id} has been processed.`,
-              { autoClose: false }
-            );
-
-            // Copy the Payment ID to clipboard
-            await navigator.clipboard.writeText(response.razorpay_payment_id);
-
-            // Send mail to the user
-            await sendMail(response.razorpay_payment_id);
-
-            setTimeout(() => {
-              toast.info(`Your Token ID has been copied to your clipboard. Please keep it safe!`, { autoClose: false });
-            }, 500);
-
-            setTimeout(() => {
-              router.push('/verifyuser');
-            }, 1000);
-
-            setUserPaymentId(response.razorpay_payment_id);
-            await handlePaymentData(response.razorpay_payment_id, 'success');
-            setPaymentStatus(true);
-          } else {
-            await handlePaymentData(response.razorpay_payment_id, 'failed');
+            toast.error('Payment verification failed. Please contact support.');
+          } finally {
             setPaymentStatus(true);
           }
         },
@@ -217,16 +237,27 @@ const PaymentCheckout = () => {
           color: "#004873",
         },
         prefill: {
-          name: userName || '',
-          email: userEmail || '',
-          contact: userContact || '',
+          name: userData.name || '',
+          email: userData.email || '',
+          contact: userData.guardianNumber || '',
         },
+        notes: {
+          address: userData.address,
+          talent: userData.talent,
+          category: userData.category
+        },
+        modal: {
+          ondismiss: function () {
+            setPaymentStatus(true);
+            toast.error('Payment window closed. Please try again if you want to proceed.');
+          }
+        }
       };
 
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
     } catch (error) {
-      console.error('Error initiating payment:', error.message);
+      console.error('Error initiating payment:', error);
       toast.error('Failed to initiate payment. Please try again later.');
       setPaymentStatus(true);
       setIsPaid(true);
@@ -234,22 +265,30 @@ const PaymentCheckout = () => {
   };
 
   // Handle send mail of participant credentials
-  const sendMail = async (userPaymentID) => {
+  const sendMail = async (paymentId) => {
     try {
-      const res = await axios.post('/api/send-mail', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userName, userEmail, userPaymentID }),
-      })
-      const data = await res.json()
-      if (data) {
-        console.log('Mail sent successfully:', data.message);
-        toast.success('Credentials sent successfully to your email.', { autoClose: false });
+      const response = await axios.post('/api/payment/send-mail', {
+        email: userData.email,
+        name: userData.name,
+        paymentId: paymentId,
+        talent: userData.talent,
+        amount: userData.charge,
+        category: userData.category,
+        ...(userData.category === 'Group' && {
+          groupName: userData.groupName,
+          memberCount: userData.memberCount
+        })
+      });
+
+      if (response.data.success) {
+        console.log('Mail sent successfully');
+        toast.success('Confirmation sent to your email.', { autoClose: false });
+      } else {
+        throw new Error(response.data.message || 'Failed to send email');
       }
     } catch (error) {
       console.error("Error in sending mail:", error);
-      toast.error('Failed to send credentials to your email. Please try again later.', { autoClose: false });
+      toast.error('Failed to send confirmation email. Please contact support.', { autoClose: false });
     }
   };
 
@@ -257,118 +296,201 @@ const PaymentCheckout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isPaid == true) {
-      setPaymentStatus(false);
-      toast.info('You have already completed the payment.',
+    if (isPaid) {
+      toast.success('You have already completed the payment. Redirecting...',
         { autoClose: false }
       );
-
       setTimeout(() => {
         router.push('/verifyuser');
       }, 1000);
-
-      setPaymentStatus(true);
       return;
     }
 
-    setPaymentStatus(false);
-    setIsPaid(false);
-    initiatePayment();
+    await initiatePayment();
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-blue-500 font-medium text-lg">Loading, please wait...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-[#e5e7eb] w-[100%] min-h-[55vh] flex justify-center items-center">
-      <div className="max-w-[100rem] bg-white w-[95%] h-[80%] md:py-10 md:px-[5%] py-5 sm:px-5 px-3 grid lg:grid-cols-3 grid-cols-1 md:gap-10 relative">
+    <div className="bg-[#e5e7eb] w-full min-h-screen flex justify-center items-center py-8">
+      <div className="max-w-6xl bg-white w-[95%] h-full md:py-8 md:px-8 py-5 px-4 grid lg:grid-cols-3 grid-cols-1 gap-8 rounded-lg shadow-lg">
         {/* Cart Items */}
         <div className="cart-items col-span-2">
-          <div className="cart-header flex justify-between items-center mb-2">
-            <h1 className="md:text-2xl sm:text-xl text-base font-medium pb-0">Payment Checkout</h1>
-            <button onClick={() => router.push('/register')} className="px-6 py-2 bg-[#004873] text-white font-semibold rounded hover:bg-[#0076ff] transition duration-300">
+          <div className="cart-header flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">Payment Checkout</h1>
+            <button
+              onClick={() => router.push('/register')}
+              className="px-6 py-2 bg-[#004873] text-white font-semibold rounded hover:bg-[#0076ff] transition duration-300"
+            >
               Go back
             </button>
           </div>
-          {/* Cart Table */}
-          <div className="relative w-full">
-            <table className="w-full text-sm">
-              <thead className="border-b">
-                <tr className="border-b text-gray-600 uppercase">
-                  <th className="h-12 px-1.5 text-left font-medium">Checkout Info</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b py-1 px-10 hover:bg-muted/50">
-                  <td className="p-1.5">
-                    <div className="flex flex-col md:flex-row items-start">
-                      <div className="img-qty flex flex-col w-[5vw] h-[5vh] mr-3">
-                        <Image
-                          src="/logo.png"
-                          width="50"
-                          height="100"
-                          className="md:w-28 w-20 md:h-24 h-20 mx-auto mb-1.5"
-                          alt="logo"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="text-base">
-                        <p className="font-semibold uppercase">{userTalent} COMPETITION FOR AGE {userAgeCriteria}</p>
-                        <div className='flex gap-1'>
-                          <p className="text-gray-500 font-medium uppercase text-sm">{userName} |</p>
-                          <p className="text-gray-500 font-medium uppercase text-sm">{userContact} |</p>
-                          <p className="text-gray-500 font-medium text-sm">{userEmail}</p>
-                        </div>
-                        <p className="md:text-sm text-xs">
-                          <span className="text-red-600 font-medium mr-2">₹ {charge}</span>
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
-        {/* Checkout Section */}
-        <form ref={formRef} onSubmit={handleSubmit}>
-          <div className="col-span-1">
-            <div className="checkout-container">
-              <div className="mt-4 p-4 border border-gray-200 rounded md:sticky top-32 h-fit">
-                <div className="flex justify-between mb-2">
-                  <p className="font-medium sm:text-base text-sm">Subtotal:</p>
-                  <p className="text-sm">₹ {charge}</p>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <p className="font-medium sm:text-base text-sm">Discount:</p>
-                  <p className="text-sm">₹ 0</p>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <p className="font-medium sm:text-base text-sm">IGST:</p>
-                  <p className="text-sm">₹ {igstAmount}</p>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <p className="font-medium sm:text-base text-sm">CGST:</p>
-                  <p className="text-sm">₹ {cgstAmount}</p>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <p className="font-medium sm:text-base text-sm">Total Including GST:</p>
-                  <p className="text-sm">₹ {totalIncludingGST}</p>
-                </div>
-                <button
-                  type='submit'
-                  className={`w-full py-2 bg-[#004873] flex justify-center items-center text-white font-semibold rounded ${paymentStatus ? 'hover:bg-[#0076ff]' : 'opacity-50 cursor-not-allowed'
-                    } transition duration-300`}
-                  disabled={!paymentStatus}
-                >
-                  {!paymentStatus ? ( // Show spinner while submitting
-                    <Loader className="animate-spin" size={20} />
-                  ) : (
-                    "Pay"
-                  )}
-                </button>
+          {/* Participant Information */}
+          <div className="bg-gray-50 p-6 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-700">Participant Information</h2>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Category</p>
+                <p className="font-medium">{userData.category}</p>
+              </div>
+
+              {userData.category === 'Group' && (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Group Name</p>
+                    <p className="font-medium">{userData.groupName}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Members</p>
+                    <p className="font-medium">{userData.memberCount}</p>
+                  </div>
+                </>
+              )}
+
+              {userData.category !== 'Group' && (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Name</p>
+                    <p className="font-medium">{userData.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Email</p>
+                    <p className="font-medium">{userData.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Age</p>
+                    <p className="font-medium">{userData.age}</p>
+                  </div>
+                </>
+              )}
+
+              <div>
+                <p className="text-sm font-medium text-gray-500">Contact Number</p>
+                <p className="font-medium">{userData.guardianNumber}</p>
+              </div>
+
+              <div>
+                <p className="text-sm font-medium text-gray-500">Talent Category</p>
+                <p className="font-medium">{userData.talent}</p>
               </div>
             </div>
           </div>
-        </form>
+
+          {/* Payment Summary */}
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4 text-gray-700">Payment Summary</h2>
+
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Registration Fee:</span>
+                <span className="font-medium">₹ {userData.charge}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-600">IGST (9%):</span>
+                <span className="font-medium">₹ {igstAmount.toFixed(2)}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-600">CGST (9%):</span>
+                <span className="font-medium">₹ {cgstAmount.toFixed(2)}</span>
+              </div>
+
+              <div className="border-t border-gray-200 pt-3 mt-3">
+                <div className="flex justify-between font-semibold text-lg">
+                  <span>Total Amount:</span>
+                  <span>₹ {totalIncludingGST}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Action Section */}
+        <div className="col-span-1">
+          <form ref={formRef} onSubmit={handleSubmit}>
+            <div className="bg-white border border-gray-200 rounded-lg p-6 sticky top-8 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Complete Payment</h3>
+
+              {isPaid ? (
+                <div className="bg-green-50 border border-green-200 rounded p-4 mb-4">
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <p className="text-green-700 font-medium">Payment Completed</p>
+                  </div>
+                  <p className="text-sm text-green-600 mt-2">
+                    Your payment ID: <span className="font-mono">{userPaymentId}</span>
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/verifyuser')}
+                    className="w-full mt-4 py-2 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition duration-300"
+                  >
+                    View Registration
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-gray-600">Total Amount:</span>
+                      <span className="text-xl font-bold text-[#004873]">₹ {totalIncludingGST}</span>
+                    </div>
+
+                    <p className="text-sm text-gray-500 mb-4">
+                      {userData.charge === 0 ?
+                        "This is a free registration" :
+                        "Includes all taxes and fees"}
+                    </p>
+
+                    <div className="flex items-center mb-4">
+                      <input
+                        type="checkbox"
+                        id="termsCheckbox"
+                        className="mr-2"
+                        required
+                      />
+                      <label htmlFor="termsCheckbox" className="text-sm text-gray-600">
+                        I agree to the <a href="/terms" className="text-[#004873] hover:underline">terms and conditions</a>
+                      </label>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={!paymentStatus}
+                    className={`w-full py-3 flex justify-center items-center text-white font-semibold rounded-lg ${paymentStatus
+                      ? 'bg-[#004873] hover:bg-[#0076ff]'
+                      : 'bg-gray-400 cursor-not-allowed'
+                      } transition duration-300`}
+                  >
+                    {!paymentStatus ? (
+                      <>
+                        <Loader className="animate-spin mr-2" size={20} />
+                        Processing...
+                      </>
+                    ) : (
+                      userData.charge === 0 ? "Complete Registration" : "Pay Now"
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

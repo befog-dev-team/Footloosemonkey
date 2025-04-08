@@ -1,29 +1,32 @@
-import Payment from "../../../models/Payment";
+import { prisma } from "../../../../lib/prisma"; // Adjust the import path as necessary
 import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
     try {
-        const extractData = await Payment.find();
+        const extractData = await prisma.payment.findMany({
+            include: {
+                participant: true // Include related participant data
+            }
+        });
+
         if (extractData) {
             return NextResponse.json({
                 success: true,
                 data: extractData
-            })
-        }
-        else {
+            });
+        } else {
             return NextResponse.json({
                 success: false,
-                message: "Something goes wrong! Please try again."
-            })
+                message: "No payment data found"
+            });
         }
     } catch (error) {
         console.error(error);
-
         return NextResponse.json({
             success: false,
             message: 'Something went wrong! Please try again.'
-        })
+        });
     }
 }

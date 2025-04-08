@@ -95,7 +95,7 @@ const UploadForm = () => {
                     }));
                 } else {
                     setError('No user found for this email.');
-                    toast.info('No user found for this email.');
+                    toast.success('No user found for this email.');
                 }
             } catch (error) {
                 console.error('Error fetching data:', error.response?.data || error.message);

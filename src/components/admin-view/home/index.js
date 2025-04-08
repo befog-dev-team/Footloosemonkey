@@ -125,9 +125,9 @@ export default function AdminPage() {
 
                 {formData.talent && (
                     <>
-                        {renderChargeDropdown('Group A Charges', formData.groupACharge, handleChange('groupACharge'))}
-                        {renderChargeDropdown('Group B Charges', formData.groupBCharge, handleChange('groupBCharge'))}
-                        {renderChargeDropdown('Group C Charges', formData.groupCCharge, handleChange('groupCCharge'))}
+                        {renderChargeDropdown('Group A Charge', formData.groupACharge, handleChange('groupACharge'))}
+                        {renderChargeDropdown('Group B Charge', formData.groupBCharge, handleChange('groupBCharge'))}
+                        {renderChargeDropdown('Group C Charge', formData.groupCCharge, handleChange('groupCCharge'))}
 
                         <div className="flex items-center mb-4">
                             <label className="mr-2">Activate Offer:</label>

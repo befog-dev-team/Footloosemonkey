@@ -8,10 +8,10 @@ export async function POST(req) {
         const extractData = await req.json();
 
         // Destructure required fields from the incoming data
-        const { email, name, ageCriteria, age, guardianNumber, address, talent, charges, termsAccepted } = extractData;
+        const { email, name, ageCriteria, age, guardianNumber, address, talent, charge, termsAccepted } = extractData;
 
         // Create a new Registration document
-        const registration = new Registration({ email, name, ageCriteria, age, guardianNumber, address, talent, charges, termsAccepted });
+        const registration = new Registration({ email, name, ageCriteria, age, guardianNumber, address, talent, charge, termsAccepted });
 
         // Save the document to the database
         const result = await registration.save();

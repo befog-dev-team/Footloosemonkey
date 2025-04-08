@@ -245,7 +245,6 @@ const RegisterForm = () => {
       values.members.forEach((member, index) => {
         if (!member.name) errors[`memberName_${index}`] = "Member name is required";
         if (!member.email) errors[`memberEmail_${index}`] = "Member email is required";
-        if (!member.age) errors[`memberAge_${index}`] = "Member age is required";
       });
     } else {
       if (!values.email) errors.email = "Email is required";
@@ -326,6 +325,7 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form Values:", values);
     const validationErrors = validate(values, isGroup);
     setErrors(validationErrors);
 
@@ -353,7 +353,7 @@ const RegisterForm = () => {
         address: values.address,
         talent: values.talent,
         members: isGroup ? values.members : null,
-        charges: calculatedCharge,
+        charge: calculatedCharge,
         termsAccepted: values.termsAccepted,
       });
 
@@ -362,7 +362,7 @@ const RegisterForm = () => {
         const paymentData = {
           category: values.category,
           talent: values.talent,
-          charges: calculatedCharge,
+          charge: calculatedCharge,
           guardianNumber: values.guardianNumber,
           address: values.address,
           ...(isGroup ? {

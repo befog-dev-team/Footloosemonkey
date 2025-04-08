@@ -2,19 +2,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import { getRegistrationData } from '../../app/services/index';  // Import necessary services
+import { getAdminData } from '../../app/services/index';  // Import necessary services
 import { BiLogoGmail } from 'react-icons/bi'
-import { FaFacebook } from 'react-icons/fa' 
+import { FaFacebook } from 'react-icons/fa'
 import { RiInstagramFill } from 'react-icons/ri'
 
 
 const Footer = () => {
   const [competition, setCompetition] = useState('')
 
-  // Load data from getRegistrationData()
+  // Load data from getAdminData
   useEffect(() => {
     const fetchRegistrationData = async () => {
-      const response = await getRegistrationData();
+      const response = await getAdminData();
       if (response.success && response.data) {
         setCompetition(response.data[0].talent.toLowerCase());
       } else {

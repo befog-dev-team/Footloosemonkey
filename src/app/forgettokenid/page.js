@@ -43,7 +43,7 @@ const ForgetTokenId = () => {
                 await navigator.clipboard.writeText(payment.paymentId);
 
                 setTimeout(() => {
-                    toast.info(`Your Payment ID has been copied to your clipboard. Please keep it safe!`);
+                    toast.success(`Your Payment ID has been copied to your clipboard. Please keep it safe!`);
                 }, 500);
             } else {
                 throw new Error(response.data.message);

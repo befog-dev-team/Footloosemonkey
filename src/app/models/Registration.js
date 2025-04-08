@@ -11,7 +11,7 @@ const registrationSchema = new mongoose.Schema({
     address: { type: String },
     talent: { type: String },
     members: { type: String }, // For group registrations, list of member names
-    charges: { type: String }, // Group charge based on age category
+    charge: { type: String }, // Group charge based on age category
     termsAccepted: {
         videoSharing: { type: Boolean },
         offensiveContent: { type: Boolean },

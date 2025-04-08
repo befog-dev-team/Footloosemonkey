@@ -39,7 +39,7 @@ model Registration {
   guardianNumber   String
   address          String
   talent           String
-  charges          String
+  charge          String
   videoSharing     Boolean
   offensiveContent Boolean
   incident         Boolean
