@@ -9,8 +9,6 @@ export async function POST(req) {
     try {
         const { id, talent, offerCharge, groupACharge, groupBCharge, groupCCharge } = await req.json();
 
-        console.log("Received data:", { id, talent, offerCharge, groupACharge, groupBCharge, groupCCharge });
-
         // Check if the document with the given id exists
         const existingEntry = await prisma.adminData.findUnique({
             where: { id }

@@ -31,8 +31,8 @@ export async function GET(req) {
                 message: "No records found for the provided email."
             });
         }
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.error(error);
 
         return NextResponse.json({
             success: false,

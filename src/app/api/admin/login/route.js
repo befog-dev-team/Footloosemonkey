@@ -8,7 +8,6 @@ export const dynamic = 'force-dynamic'
 export async function POST(req) {
     try {
         const { email, password } = await req.json();
-        console.log("Email: ", email, "Password: ", password);
 
         // Find admin by email
         const admin = await prisma.admin.findUnique({

@@ -28,7 +28,6 @@ const ForgetTokenId = () => {
 
         try {
             setLoading(true);
-            console.log('Fetching data...');
             const response = await axios.get('/api/payment/get');
 
             if (response.data.success) {

@@ -20,8 +20,8 @@ export async function GET(req) {
                 message: "Something goes wrong! Please try again."
             })
         }
-    } catch (e) {
-        console.log(e)
+    } catch (error) {
+        console.error(error);
 
         return NextResponse.json({
             success: false,

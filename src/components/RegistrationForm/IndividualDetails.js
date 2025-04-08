@@ -2,8 +2,6 @@
 import React from "react";
 
 const IndividualDetails = ({ values, onChange, errors, category }) => (
-
-    console.log("IndividualDetails", values, errors, category),
     <>
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Email:</label>

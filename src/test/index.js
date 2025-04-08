@@ -17,7 +17,6 @@ const VideoGallery = () => {
         const getData = async () => {
             try {
                 const response = await fetchAllSubmission()
-                console.log("Response", response)
                 setVideos(response)
                 setLoading(false)
             } catch (error) {

@@ -15,7 +15,7 @@ const AdBanner: React.FC<AdBannerTypes> = ({ dataAdSlot, dataAdFormat, dataFullW
                 try {
                     ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
                 } catch (error: any) {
-                    console.log(error.message);
+                    console.error(error.message);
                 }
             }
         };

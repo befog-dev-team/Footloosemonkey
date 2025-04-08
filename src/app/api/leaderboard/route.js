@@ -15,7 +15,6 @@ export async function GET(req) {
         createdAt: true,
       },
     });
-    console.log(leaderboard);
     return new Response(JSON.stringify(leaderboard), { status: 200 });
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
