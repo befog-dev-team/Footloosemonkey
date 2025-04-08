@@ -4,10 +4,10 @@ import FormControls from "../forms-control";
 
 const controls = [
     {
-        name: 'username',
-        placeholder: 'Enter your username',
-        type: 'text',
-        label: 'Username'
+        name: 'email',
+        placeholder: 'Enter your email',
+        type: 'email',
+        label: 'email'
     },
     {
         name: 'password',

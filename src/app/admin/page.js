@@ -7,7 +7,7 @@ import Login from '../../components/admin-view/login'
 import { toast } from 'react-hot-toast'
 
 const initialLoginFormData = {
-    username: '',
+    email: '',
     password: '',
 }
 
@@ -28,10 +28,16 @@ const AdminView = () => {
     }, [])
 
     async function handleLogin() {
-        if (!loginFormData.username || !loginFormData.password) {
-            toast.error('Please fill in all fields')
+        if (!loginFormData.email) {
+            toast.error('Please enter your email')
             return;
         }
+
+        if (!loginFormData.password) {
+            toast.error('Please enter your password')
+            return;
+        }
+
         try {
             const res = await login(loginFormData)
             if (res?.success) {
@@ -43,7 +49,7 @@ const AdminView = () => {
                 toast.error(res?.message || 'Login failed')
             }
         } catch (error) {
-            toast.error(res?.message || 'Login failed')
+            toast.error(res?.message || ' failed')
         }
     }
 

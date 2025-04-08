@@ -34,7 +34,7 @@ export const getAdminData = async () => {
 // CRUD Operations for get, add, update and delete for Admin
 export async function login(formData) {
     try {
-        const response = await axios.post('/api/admin', formData, {
+        const response = await axios.post('/api/admin/login', formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
