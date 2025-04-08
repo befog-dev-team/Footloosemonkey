@@ -7,7 +7,9 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
     try {
-        const { id, talent, individualFee, groupAFee, groupBFee, groupCFee } = await req.json();
+        const { id, talent, offerCharge, groupACharge, groupBCharge, groupCCharge } = await req.json();
+
+        console.log("Received data:", { id, talent, offerCharge, groupACharge, groupBCharge, groupCCharge });
 
         // Check if the document with the given id exists
         const existingEntry = await prisma.adminData.findUnique({
@@ -20,10 +22,10 @@ export async function POST(req) {
                 where: { id },
                 data: {
                     talent,
-                    individualFee,
-                    groupAFee,
-                    groupBFee,
-                    groupCFee
+                    offerCharge,
+                    groupACharge,
+                    groupBCharge,
+                    groupCCharge
                 }
             });
 
@@ -37,10 +39,10 @@ export async function POST(req) {
             const newEntry = await prisma.adminData.create({
                 data: {
                     talent,
-                    individualFee,
-                    groupAFee,
-                    groupBFee,
-                    groupCFee
+                    offerCharge,
+                    groupACharge,
+                    groupBCharge,
+                    groupCCharge
                 }
             });
 

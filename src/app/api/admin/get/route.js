@@ -11,10 +11,10 @@ export async function GET() {
             select: {
                 id: true,
                 talent: true,
-                individualFee: true,
-                groupAFee: true,
-                groupBFee: true,
-                groupCFee: true
+                offerCharge: true,
+                groupACharge: true,
+                groupBCharge: true,
+                groupCCharge: true,
             }
         });
 

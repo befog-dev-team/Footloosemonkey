@@ -21,6 +21,7 @@ export async function addAdminData(formData) {
 export const getAdminData = async () => {
     try {
         const response = await axios.get('/api/admin/get');
+        console.log('Admin data:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching admin data:', error);
