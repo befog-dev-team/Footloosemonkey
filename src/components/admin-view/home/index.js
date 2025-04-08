@@ -12,6 +12,8 @@ export default function AdminPage() {
         groupACharge: '',
         groupBCharge: '',
         groupCCharge: '',
+        offerCharge: '',
+        isOfferActive: false,
     });
     const [dataId, setDataId] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,11 +36,25 @@ export default function AdminPage() {
         }));
     };
 
+    const handleToggleOffer = () => {
+        setFormData((prev) => ({
+            ...prev,
+            isOfferActive: !prev.isOfferActive,
+            // Reset offer charge when deactivating
+            offerCharge: !prev.isOfferActive ? '' : prev.offerCharge
+        }));
+    };
+
     const handleSubmit = async () => {
-        const { talent, groupACharge, groupBCharge, groupCCharge } = formData;
+        const { talent, groupACharge, groupBCharge, groupCCharge, isOfferActive, offerCharge } = formData;
 
         if (!talent || !groupACharge || !groupBCharge || !groupCCharge) {
-            toast.error('Please fill in all fields.');
+            toast.error('Please fill in all required fields.');
+            return;
+        }
+
+        if (isOfferActive && !offerCharge) {
+            toast.error('Please set an offer charge or deactivate the offer.');
             return;
         }
 
@@ -55,11 +71,20 @@ export default function AdminPage() {
             groupACharge,
             groupBCharge,
             groupCCharge,
+            offerCharge: isOfferActive ? offerCharge : null,
+            isOfferActive
         });
 
         if (response.success) {
             toast.success('Form Saved');
-            setFormData({ talent: '', groupACharge: '', groupBCharge: '', groupCCharge: '' });
+            setFormData({
+                talent: '',
+                groupACharge: '',
+                groupBCharge: '',
+                groupCCharge: '',
+                offerCharge: '',
+                isOfferActive: false
+            });
         } else {
             toast.error(`Error: ${response.message}`);
         }
@@ -103,6 +128,23 @@ export default function AdminPage() {
                         {renderChargeDropdown('Group A Charges', formData.groupACharge, handleChange('groupACharge'))}
                         {renderChargeDropdown('Group B Charges', formData.groupBCharge, handleChange('groupBCharge'))}
                         {renderChargeDropdown('Group C Charges', formData.groupCCharge, handleChange('groupCCharge'))}
+
+                        <div className="flex items-center mb-4">
+                            <label className="mr-2">Activate Offer:</label>
+                            <button
+                                type="button"
+                                onClick={handleToggleOffer}
+                                className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${formData.isOfferActive ? 'bg-blue-500' : 'bg-gray-200'}`}
+                            >
+                                <span
+                                    className={`inline-block w-4 h-4 transform transition-transform rounded-full bg-white ${formData.isOfferActive ? 'translate-x-6' : 'translate-x-1'}`}
+                                />
+                            </button>
+                        </div>
+
+                        {formData.isOfferActive && (
+                            renderChargeDropdown('Offer Charge', formData.offerCharge, handleChange('offerCharge'))
+                        )}
                     </>
                 )}
 
