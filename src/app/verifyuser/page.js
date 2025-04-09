@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,12 +16,11 @@ const VerifyPayment = () => {
     const [loading, setLoading] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, []);
 
     useEffect(() => {
         setIsButtonDisabled(!emailRegex.test(email) || !paymentId.trim());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [email, paymentId]);
+    }, [email, paymentId, emailRegex]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,17 +29,35 @@ const VerifyPayment = () => {
 
         try {
             setLoading(true);
-            const response = await axios.get('/api/payment/get');
-            const payment = response.data.data.find((p) => p.email === email && p.paymentId === paymentId);
-            if (!payment) {
-                throw new Error('Payment not found. Please check your details and try again.');
+
+            // First check individual participants
+            const individualResponse = await axios.get(`/api/payment/verifyuser/individual?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
+
+            if (individualResponse.data?.participant) {
+                // Individual participant found
+                setMessage('User Verification successful!');
+                toast.success('User Verified Successfully!');
+                router.push(`/submission?email=${encodeURIComponent(email)}`);
+                return;
             }
-            setMessage('User Verification successful!');
-            toast.success('User Verified Successfully!');
-            router.push(`/submission?email=${encodeURIComponent(email)}`);
+
+            // If not found as individual, check group registrations
+            const groupResponse = await axios.get(`/api/payment/verifyuser/group?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
+
+            if (groupResponse.data?.registration) {
+                // Group registration found
+                setMessage('Group Verification successful!');
+                toast.success('Group Verified Successfully!');
+                router.push(`/submission?email=${encodeURIComponent(email)}&group=${encodeURIComponent(groupResponse.data.registration.id)}`);
+                return;
+            }
+
+            // If neither found
+            throw new Error('Payment not found. Please check your details and try again.');
+
         } catch (err) {
-            setError('Verification failed. Please try again.');
-            toast.error('Verification failed. Please try again')
+            setError(err.message || 'Verification failed. Please try again.');
+            toast.error(err.message || 'Verification failed. Please try again');
         } finally {
             setLoading(false);
         }
@@ -65,9 +82,11 @@ const VerifyPayment = () => {
                 </div>
                 <div className="mb-4">
                     <label htmlFor="paymentId" className="block text-sm font-medium text-gray-700">
-                        Token ID
+                        Payment ID
                     </label>
-                    <p className="text-red-500 text-[0.7rem] mb-2">Note: Token ID will Generate after submission of Registration Form</p>
+                    <p className="text-red-500 text-[0.7rem] mb-2">
+                        Note: Payment ID is generated after successful payment
+                    </p>
                     <input
                         type="text"
                         id="paymentId"
@@ -85,14 +104,14 @@ const VerifyPayment = () => {
                     {loading ? (
                         <Loader className="animate-spin" size={20} />
                     ) : (
-                        "Submit"
+                        "Verify Payment"
                     )}
                 </button>
 
                 {/* Forgot Payment ID Option */}
                 <Link href='/forgettokenid' className='text-center'>
                     <button className="mt-4 text-sm w-full text-blue-500 hover:underline">
-                        Forgot Token ID?
+                        Forgot Payment ID?
                     </button>
                 </Link>
             </form>

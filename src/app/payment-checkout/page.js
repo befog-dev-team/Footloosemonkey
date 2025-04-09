@@ -1,9 +1,7 @@
 "use client";
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
-import { addPaymentData } from '../services/index';
 import { Loader } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
