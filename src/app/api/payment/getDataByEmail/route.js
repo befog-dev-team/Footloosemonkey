@@ -1,39 +1,47 @@
-import Payment from "../../../models/Payment";
-import { NextResponse } from "next/server";
+// app/api/checksubmission/route.ts
+import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
     try {
-        // Get the email from the query parameters
         const { searchParams } = new URL(req.url);
-        const email = searchParams.get("email");
+        const email = searchParams.get('email');
 
-        // If email is provided, find records by email
-        let extractData;
-        if (email) {
-            extractData = await Payment.find({ email: email });
-        } else {
-            extractData = await Payment.find(); // If no email is provided, return all records
+        if (!email) {
+            return NextResponse.json(
+                { success: false, message: 'Email is required' },
+                { status: 400 }
+            );
         }
 
-        if (extractData && extractData.length > 0) {
-            return NextResponse.json({
-                success: true,
-                data: extractData
-            });
-        } else {
-            return NextResponse.json({
-                success: false,
-                message: "No records found for the provided email."
-            });
+        // First find the participant
+        const participant = await prisma.participant.findFirst({
+            where: { email }
+        });
+
+        if (!participant) {
+            return NextResponse.json(
+                { success: false, message: 'Participant not found' },
+                { status: 404 }
+            );
         }
-    } catch (error) {
-        console.error(error);
 
         return NextResponse.json({
-            success: false,
-            message: 'Something went wrong! Please try again.'
+            success: true,
+            data: participant
         });
+
+    } catch (error) {
+        console.error('Error checking submission:', error);
+        return NextResponse.json(
+            { success: false, message: 'Internal server error' },
+            { status: 500 }
+        );
+    } finally {
+        await prisma.$disconnect();
     }
 }

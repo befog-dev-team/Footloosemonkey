@@ -7,7 +7,11 @@ export const fetchAllSubmission = async () => {
 
     try {
         // Fetch all submissions
-        const response = await prisma.submission.findMany()
+        const response = await prisma.submission.findMany({
+            include: {
+                participant: true
+            }
+        })
         return response
     } catch (error) {
         console.error(error)
@@ -17,10 +21,10 @@ export const fetchAllSubmission = async () => {
 }
 
 export const fetchLeaderboard = async () => {
-    const prisma = new PrismaClient()
+    const prisma = new PrismaClient();
 
     try {
-        // Fetch top 10 submissions by vote count
+        // Fetch top 10 submissions by vote count with participant data
         const leaderboard = await prisma.submission.findMany({
             orderBy: {
                 voteCount: 'desc'
@@ -30,16 +34,29 @@ export const fetchLeaderboard = async () => {
                 id: true,
                 participantId: true,
                 profilepic: true,
-                name: true,
-                participantTalent: true,
                 voteCount: true,
-                createdAt: true
+                createdAt: true,
+                participant: {
+                    select: {
+                        name: true,
+                        talent: true
+                    }
+                }
             }
-        })
-        return leaderboard
+        });
+
+        console.log("leaderboard data", leaderboard);
+
+        // Transform the data to match your frontend expectations
+        return leaderboard.map(item => ({
+            ...item,
+            name: item.participant?.name || 'Unknown',
+            participantTalent: item.participant?.talent || 'Not specified'
+        }));
     } catch (error) {
-        console.error(error)
+        console.error(error);
+        return [];
     } finally {
-        prisma.$disconnect()
+        await prisma.$disconnect();
     }
-}
+};

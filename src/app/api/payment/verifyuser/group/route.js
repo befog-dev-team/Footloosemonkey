@@ -25,7 +25,7 @@ export async function GET(request) {
                 Payment: {
                     some: {
                         paymentID: paymentId,
-                        paymentStatus: 'SUCCESS'
+                        paymentStatus: 'success'
                     }
                 }
             },
@@ -39,6 +39,8 @@ export async function GET(request) {
                 members: true
             }
         });
+
+        console.log('Registration found:', registration);
 
         if (!registration || !registration.Payment.length) {
             return NextResponse.json(

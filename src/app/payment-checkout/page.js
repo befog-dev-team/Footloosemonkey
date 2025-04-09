@@ -85,8 +85,6 @@ const PaymentCheckout = () => {
     return 'N/A';
   };
 
-  console.log('User Data:', userData);
-
   // Handle payment data submission
   const handlePaymentData = async (paymentId, status) => {
     const paymentData = {

@@ -30,34 +30,17 @@ const VerifyPayment = () => {
         try {
             setLoading(true);
 
-            // Check both individual and group in parallel
-            const [individualResponse, groupResponse] = await Promise.all([
-                axios.get(`/api/payment/verifyuser/individual?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`),
-                axios.get(`/api/payment/verifyuser/group?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`)
-            ]);
+            // Directly check the Participant table
+            const response = await axios.get(`/api/payment/verifyuser?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
 
-            // Check individual first
-            if (individualResponse.data?.participant) {
-                setMessage('User Verification successful!');
+            if (response.data?.participant) {
+                setMessage('Verification successful!');
                 toast.success('User Verified Successfully!');
                 router.push(`/submission?email=${encodeURIComponent(email)}`);
                 return;
             }
 
-            // Then check group
-            if (groupResponse.data?.registration) {
-                setMessage('Group Verification successful!');
-                toast.success('Group Verified Successfully!');
-
-                // Find if the email belongs to the main registration or a member
-                const isMainContact = groupResponse.data.registration.email === email;
-                const member = groupResponse.data.registration.members?.find(m => m.email === email);
-
-                router.push(`/submission?email=${encodeURIComponent(email)}&group=${encodeURIComponent(groupResponse.data.registration.id)}`);
-                return;
-            }
-
-            // If neither found
+            // If not found
             throw new Error('Payment not found. Please check your details and try again.');
 
         } catch (err) {
@@ -68,7 +51,6 @@ const VerifyPayment = () => {
             setLoading(false);
         }
     };
-
 
     return (
         <div className="flex flex-col items-center justify-center h-[90vh] bg-[aliceblue]">

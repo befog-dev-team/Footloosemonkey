@@ -1,19 +1,24 @@
-import prisma from '../../../lib/prisma';
 import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {
-    const { userId, submissionId } = await req.json();
+    const { userId, videoId } = await req.json();
 
     // Check if the user has already voted on this submission
     const existingVote = await prisma.vote.findUnique({
       where: {
         userId_submissionId: {
           userId,
-          submissionId,
+          submissionId: videoId,
         },
       },
     });
+
+    let voteCountChange;
+    let isVoted;
 
     if (existingVote) {
       // If the user has already voted, we delete the vote and decrement the count
@@ -22,34 +27,38 @@ export async function POST(req) {
           where: { id: existingVote.id },
         });
         await prisma.submission.update({
-          where: { id: submissionId },
+          where: { id: videoId },
           data: { voteCount: { decrement: 1 } },
         });
       });
-
-      return NextResponse.json({
-        message: "Vote removed",
-        isVoted: false,
-      });
+      voteCountChange = -1;
+      isVoted = false;
     } else {
       // If the user has not voted, we add the vote and increment the count
       await prisma.$transaction(async (prisma) => {
         await prisma.vote.create({
-          data: { userId, submissionId },
+          data: { userId, submissionId: videoId },
         });
         await prisma.submission.update({
-          where: { id: submissionId },
+          where: { id: videoId },
           data: { voteCount: { increment: 1 } },
         });
       });
-
-      return NextResponse.json({
-        message: "Vote added",
-        isVoted: true,
-      });
+      voteCountChange = 1;
+      isVoted = true;
     }
+
+    return NextResponse.json({
+      success: true,
+      isVoted,
+      voteCountChange,
+    });
+
   } catch (error) {
     console.error("Error toggling vote:", error);
-    return NextResponse.json({ error: "Failed to toggle vote" }, { status: 500 });
+    return NextResponse.json({
+      success: false,
+      error: "Failed to toggle vote"
+    }, { status: 500 });
   }
 }

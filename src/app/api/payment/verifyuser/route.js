@@ -1,90 +1,55 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function GET(request) {
-    console.log('Hit Api...');
+    console.log('Verification request received:', request.url);
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
     const paymentId = searchParams.get('paymentId');
 
-    console.log('Verifying payment:', { email, paymentId });
+    console.log('Verification request for:', email);
 
     if (!email || !paymentId) {
         return NextResponse.json(
-            { error: 'Email and Payment ID are required' },
+            { error: 'Email and paymentId are required' },
             { status: 400 }
         );
     }
 
     try {
-        // Check individual first
         const participant = await prisma.participant.findFirst({
             where: {
-                email,
-                payments: {
-                    some: {
-                        paymentID: paymentId,
-                        paymentStatus: 'SUCCESS'
-                    }
-                }
+                email: email,
+                paymentId: paymentId,
             },
             include: {
-                payments: {
-                    where: {
-                        paymentID: paymentId
-                    },
-                    take: 1
-                }
-            }
-        });
-
-        if (participant?.payments?.length) {
-            return NextResponse.json({
-                type: 'individual',
-                data: participant,
-                payment: participant.payments[0]
-            });
-        }
-
-        // Check group if individual not found
-        const registration = await prisma.registration.findFirst({
-            where: {
-                OR: [
-                    { email },
-                    { members: { some: { email } } }
-                ],
-                Payment: {
-                    some: {
-                        paymentID: paymentId,
-                        paymentStatus: 'SUCCESS'
-                    }
-                }
+                payments: true,
+                submissions: true, // Include submissions if needed
             },
-            include: {
-                Payment: {
-                    where: {
-                        paymentID: paymentId
-                    },
-                    take: 1
-                },
-                members: true
-            }
         });
 
-        if (registration?.Payment?.length) {
-            return NextResponse.json({
-                type: 'group',
-                data: registration,
-                payment: registration.Payment[0]
-            });
+        if (!participant) {
+            return NextResponse.json(
+                { error: 'Participant not found with provided email and payment ID' },
+                { status: 404 }
+            );
         }
+
+        // Don't return sensitive data
+        const { payments, submissions, ...safeParticipant } = participant;
 
         return NextResponse.json(
-            { error: 'Payment not found' },
-            { status: 404 }
+            {
+                participant: safeParticipant,
+                hasPayment: payments.length > 0,
+                hasSubmission: submissions.length > 0
+            },
+            { status: 200 }
         );
     } catch (error) {
-        console.error('Error verifying payment:', error);
+        console.error('Verification error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

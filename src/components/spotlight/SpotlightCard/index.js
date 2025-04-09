@@ -13,6 +13,7 @@ dayjs.extend(relativeTime); // Add relativeTime plugin to dayjs
 const VideoGallery = ({ searchInput }) => {
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -21,6 +22,7 @@ const VideoGallery = ({ searchInput }) => {
                 // Sort videos by createdAt in descending order
                 const sortedVideos = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setVideos(sortedVideos);
+                setData(response);
                 setLoading(false);
             } catch (error) {
                 console.error(error);
@@ -82,44 +84,48 @@ const VideoCard = ({ video }) => {
         setIsVoted(votedVideos.includes(video.id));
     }, [video.id]);
 
-    const handleVoteToggle = async (videoId) => {
-        if (voting) return; // Prevent multiple requests
+    const handleVoteToggle = async () => {
+        if (voting) return;
 
         const userId = getUserId();
-        setVoting(true); // Set loading to prevent further clicks
+        setVoting(true);
 
         try {
-            const response = await axios.post('/api/vote', {
-                userId,
-                videoId,
-                isVoted: !isVoted // Toggle vote state
-            }, {
+            const response = await fetch('/api/vote', {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId,
+                    videoId: video.id
+                }),
             });
-            const result = await response.json();
 
-            if (response.ok) {
-                setIsVoted(!isVoted);
+            const data = await response.json();
 
+            if (data.success) {
+                setIsVoted(data.isVoted);
+                setVoteCount(prev => prev + data.voteCountChange);
+
+                // Update local storage
                 const votedVideos = JSON.parse(localStorage.getItem('votedVideos')) || [];
-                if (isVoted) {
-                    const updatedVotes = votedVideos.filter((id) => id !== videoId);
-                    localStorage.setItem('votedVideos', JSON.stringify(updatedVotes));
+                if (data.isVoted) {
+                    localStorage.setItem('votedVideos',
+                        JSON.stringify([...votedVideos, video.id])
+                    );
                 } else {
-                    votedVideos.push(videoId);
-                    localStorage.setItem('votedVideos', JSON.stringify(votedVideos));
+                    localStorage.setItem('votedVideos',
+                        JSON.stringify(votedVideos.filter(id => id !== video.id))
+                    );
                 }
-            } else {
-                console.error(result.message);
             }
         } catch (error) {
             console.error('Error toggling vote:', error);
         } finally {
-            setVoting(false); // Reset loading state
+            setVoting(false);
         }
-    };
+    }
 
     const formatDuration = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -155,13 +161,13 @@ const VideoCard = ({ video }) => {
                         className="rounded-full mr-2 p-[0.15rem] w-[60px] h-[60px] border-blue-500 border-[3px]"
                     />
                     <div>
-                        <div className="text-xl font-semibold uppercase">{video.name}</div>
-                        <div className="text-sm">{video.participantId}</div>
+                        <div className="text-xl font-semibold uppercase">{video?.participant?.name}</div>
+                        <div className="text-sm text-gray-600">{video?.participant?.email}</div>
                     </div>
                 </div>
                 <div className='flex justify-between items-center my-4 bg-white uppercase'>
                     <div className='text-sm font-semibold text-gray-700'>
-                        <span className='font-bold text-blue-500'>Talent:</span> {video.participantTalent}
+                        <span className='font-bold text-blue-500'>Talent:</span> {video?.participant?.talent}
                     </div>
                     <div className="text-sm font-semibold text-gray-700">
                         <span className='font-bold text-blue-500'>Votes:</span> {video.voteCount}
