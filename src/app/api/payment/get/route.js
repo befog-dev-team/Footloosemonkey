@@ -3,11 +3,16 @@ import { NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req) {
+export async function GET() {
     try {
         const extractData = await prisma.payment.findMany({
             include: {
-                participant: true // Include related participant data
+                participant: true,
+                registration: {
+                    include: {
+                        members: true
+                    }
+                }
             }
         });
 

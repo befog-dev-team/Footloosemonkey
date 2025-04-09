@@ -43,7 +43,6 @@ const PaymentCheckout = () => {
 
           // Check if payment is already completed
           const paymentResponse = await axios.get('/api/payment/get');
-          console.log('Payment Response:', paymentResponse.data);
           const payment = paymentResponse.data.data.find(
             (p) => p.guardianNumber === parsedData.guardianNumber
           );
@@ -63,8 +62,6 @@ const PaymentCheckout = () => {
 
     fetchRegistrationData();
   }, []);
-
-  // console.log('User Data:', userData);
 
   // Calculate IGST and CGST
   const igstRate = 9, cgstRate = 9;
@@ -101,22 +98,22 @@ const PaymentCheckout = () => {
       talent: userData.talent,
       ageCriteria: getAgeGroup(),
       age: userData.age,
-      isPaid: status === 'success',
       paymentId: paymentId,
       status: status,
       ...(userData.category === 'Group' && {
         groupName: userData.groupName,
-        memberCount: userData.memberCount
+        memberCount: userData.memberCount,
+        registrationId: userData.registrationId // If you have this
       })
     };
 
     try {
-      const response = await addPaymentData(paymentData);
-      if (response.success) {
+      const response = await axios.post('/api/payment/create', paymentData);
+      if (response.data.success) {
         toast.success("Payment Successful!");
         return true;
       } else {
-        console.error("Payment Failed:", response.message);
+        console.error("Payment Failed:", response.data.message);
         toast.error("Payment Failed. Please try again later.");
         return false;
       }
@@ -141,8 +138,7 @@ const PaymentCheckout = () => {
         const paymentSuccess = await handlePaymentData(dummyPaymentId, 'success');
 
         if (paymentSuccess) {
-          toast.success("You availed the free registration successfully!",
-            { autoClose: false });
+          toast.success("You availed the free registration successfully!",);
 
           // Send confirmation email
           await sendMail(dummyPaymentId);
@@ -151,14 +147,10 @@ const PaymentCheckout = () => {
           await navigator.clipboard.writeText(dummyPaymentId);
 
           toast.success(
-            `Registration successful! Your Token ID = ${dummyPaymentId} has been processed.`,
-            { autoClose: false }
-          );
+            `Registration successful! Your Token ID = ${dummyPaymentId} has been processed.`,);
 
           toast.success(
-            `Your Token ID has been copied to your clipboard. Please keep it safe!`,
-            { autoClose: false }
-          );
+            `Your Token ID has been copied to your clipboard. Please keep it safe!`,);
 
           setTimeout(() => {
             router.push('/verifyuser');
@@ -198,9 +190,7 @@ const PaymentCheckout = () => {
 
             if (verificationResponse.data.success) {
               toast.success(
-                `Payment successful! Your Token ID = ${response.razorpay_payment_id} has been processed.`,
-                { autoClose: false }
-              );
+                `Payment successful! Your Token ID = ${response.razorpay_payment_id} has been processed.`,);
 
               // Save payment data
               const paymentSuccess = await handlePaymentData(response.razorpay_payment_id, 'success');
@@ -214,7 +204,6 @@ const PaymentCheckout = () => {
 
                 toast.success(
                   `Your Token ID has been copied to your clipboard. Please keep it safe!`,
-                  { autoClose: false }
                 );
 
                 setTimeout(() => {
@@ -267,6 +256,12 @@ const PaymentCheckout = () => {
   // Handle send mail of participant credentials
   const sendMail = async (paymentId) => {
     try {
+      // If it's a group, fetch members from your API or include them in the initial data
+      let members = [];
+      if (userData.category === 'Group' && userData.memberEmails) {
+        members = userData.memberEmails.map(email => ({ email }));
+      }
+
       const response = await axios.post('/api/payment/send-mail', {
         email: userData.email,
         name: userData.name,
@@ -276,19 +271,21 @@ const PaymentCheckout = () => {
         category: userData.category,
         ...(userData.category === 'Group' && {
           groupName: userData.groupName,
-          memberCount: userData.memberCount
+          memberCount: userData.memberCount,
+          memberNames: userData.memberNames,
+          memberEmails: userData.memberEmails,
+          members: members
         })
       });
 
       if (response.data.success) {
-        console.log('Mail sent successfully');
-        toast.success('Confirmation sent to your email.', { autoClose: false });
+        toast.success('Confirmation email sent successfully!');
       } else {
-        throw new Error(response.data.message || 'Failed to send email');
+        throw new Error(response.data.message || 'Failed to send emails');
       }
     } catch (error) {
       console.error("Error in sending mail:", error);
-      toast.error('Failed to send confirmation email. Please contact support.', { autoClose: false });
+      toast.error('Failed to send some confirmation emails. Please contact support.',);
     }
   };
 
@@ -297,9 +294,7 @@ const PaymentCheckout = () => {
     e.preventDefault();
 
     if (isPaid) {
-      toast.success('You have already completed the payment. Redirecting...',
-        { autoClose: false }
-      );
+      toast.success('You have already completed the payment. Redirecting...',);
       setTimeout(() => {
         router.push('/verifyuser');
       }, 1000);
@@ -464,7 +459,7 @@ const PaymentCheckout = () => {
                         required
                       />
                       <label htmlFor="termsCheckbox" className="text-sm text-gray-600">
-                        I agree to the <a href="/terms" className="text-[#004873] hover:underline">terms and conditions</a>
+                        I agree to the <a href="/terms-condition-policy" target='_blank' className="text-[#004873] hover:underline">terms and conditions</a>
                       </label>
                     </div>
                   </div>

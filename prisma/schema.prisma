@@ -39,7 +39,7 @@ model Registration {
   guardianNumber   String
   address          String
   talent           String
-  charge          String
+  charge           String
   videoSharing     Boolean
   offensiveContent Boolean
   incident         Boolean
@@ -47,6 +47,7 @@ model Registration {
   updatedAt        DateTime @updatedAt
 
   members Member[]
+  Payment Payment[]
 }
 
 model Member {
@@ -73,14 +74,19 @@ model Participant {
 }
 
 model Payment {
-  id            String      @id @default(uuid())
-  participantId String
-  participant   Participant @relation(fields: [participantId], references: [id])
-  amount        Float
-  paymentStatus String
-  paymentID     String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id             String        @id @default(uuid())
+  participantId  String? // Make optional for groups
+  participant    Participant?  @relation(fields: [participantId], references: [id])
+  registrationId String? // Add reference to registration
+  registration   Registration? @relation(fields: [registrationId], references: [id])
+  amount         Float
+  paymentStatus  String
+  paymentID      String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  // Add group-specific fields
+  groupName      String?
+  memberCount    Int?
 }
 
 model Submission {

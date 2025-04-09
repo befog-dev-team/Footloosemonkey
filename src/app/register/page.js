@@ -325,7 +325,6 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Values:", values);
     const validationErrors = validate(values, isGroup);
     setErrors(validationErrors);
 
@@ -367,7 +366,9 @@ const RegisterForm = () => {
           address: values.address,
           ...(isGroup ? {
             groupName: values.groupName,
-            memberCount: values.members.length
+            memberCount: values.members.length,
+            memberNames: values.members.map(member => member.name),
+            memberEmails: values.members.map(member => member.email)
           } : {
             email: values.email,
             name: values.name,
