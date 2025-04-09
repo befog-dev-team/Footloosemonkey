@@ -6,8 +6,6 @@ export async function GET(request) {
     const email = searchParams.get('email');
     const paymentId = searchParams.get('paymentId');
 
-    console.log('Verifying payment:', { email, paymentId });
-
     if (!email || !paymentId) {
         return NextResponse.json(
             { error: 'Email and Payment ID are required' },
@@ -16,53 +14,37 @@ export async function GET(request) {
     }
 
     try {
-        // First check if participant exists
-        const participantExists = await prisma.participant.findFirst({
-            where: { email }
-        });
-        console.log('Participant exists:', !!participantExists);
-
-        // Then check if payment exists
-        const paymentExists = await prisma.payment.findFirst({
-            where: { paymentID: paymentId }
-        });
-        console.log('Payment exists:', !!paymentExists);
-
-        // Then run the full query
         const participant = await prisma.participant.findFirst({
             where: {
                 email,
                 payments: {
                     some: {
                         paymentID: paymentId,
-                        paymentStatus: 'SUCCESS'
+                        paymentStatus: 'success'
                     }
                 }
             },
             include: {
                 payments: {
                     where: {
-                        paymentID: paymentId
+                        paymentID: paymentId,
+                        paymentStatus: 'success'
                     },
                     take: 1
                 }
             }
         });
 
-        console.log('Query result:', participant);
-
         if (!participant) {
-            console.log('No participant found with matching criteria');
             return NextResponse.json(
-                { error: 'Participant not found with this payment' },
+                { error: 'No participant found with this email and payment ID' },
                 { status: 404 }
             );
         }
 
-        if (!participant.payments.length) {
-            console.log('Participant found but no matching payments');
+        if (!participant.payments || participant.payments.length === 0) {
             return NextResponse.json(
-                { error: 'Payment not found for this participant' },
+                { error: 'Payment not found or not successful' },
                 { status: 404 }
             );
         }

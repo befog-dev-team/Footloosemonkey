@@ -30,24 +30,29 @@ const VerifyPayment = () => {
         try {
             setLoading(true);
 
-            // First check individual participants
-            const individualResponse = await axios.get(`/api/payment/verifyuser/individual?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
+            // Check both individual and group in parallel
+            const [individualResponse, groupResponse] = await Promise.all([
+                axios.get(`/api/payment/verifyuser/individual?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`),
+                axios.get(`/api/payment/verifyuser/group?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`)
+            ]);
 
+            // Check individual first
             if (individualResponse.data?.participant) {
-                // Individual participant found
                 setMessage('User Verification successful!');
                 toast.success('User Verified Successfully!');
                 router.push(`/submission?email=${encodeURIComponent(email)}`);
                 return;
             }
 
-            // If not found as individual, check group registrations
-            const groupResponse = await axios.get(`/api/payment/verifyuser/group?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
-
+            // Then check group
             if (groupResponse.data?.registration) {
-                // Group registration found
                 setMessage('Group Verification successful!');
                 toast.success('Group Verified Successfully!');
+
+                // Find if the email belongs to the main registration or a member
+                const isMainContact = groupResponse.data.registration.email === email;
+                const member = groupResponse.data.registration.members?.find(m => m.email === email);
+
                 router.push(`/submission?email=${encodeURIComponent(email)}&group=${encodeURIComponent(groupResponse.data.registration.id)}`);
                 return;
             }
@@ -56,12 +61,14 @@ const VerifyPayment = () => {
             throw new Error('Payment not found. Please check your details and try again.');
 
         } catch (err) {
-            setError(err.message || 'Verification failed. Please try again.');
-            toast.error(err.message || 'Verification failed. Please try again');
+            const errorMessage = err.response?.data?.error || err.message;
+            setError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="flex flex-col items-center justify-center h-[90vh] bg-[aliceblue]">
