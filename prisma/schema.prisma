@@ -12,7 +12,7 @@ datasource db {
 
 model Admin {
   id        String   @id @default(uuid())
-  email     String   @unique
+  email     String
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -20,7 +20,7 @@ model Admin {
 
 model AdminData {
   id           String   @id @default(uuid())
-  talent       String?  @unique
+  talent       String?
   offerCharge  String?
   groupACharge String?
   groupBCharge String?
@@ -69,9 +69,9 @@ model Payment {
   totalAmount     Float
   paymentStatus   String        @default("pending") // pending, success, failed
   paymentMethod   String? // razorpay, free, etc.
-  paymentID       String        @unique
+  paymentID       String
   razorpayOrderId String?
-  invoiceNumber   String?       @unique
+  invoiceNumber   String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
   groupName       String?

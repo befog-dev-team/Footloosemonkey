@@ -46,9 +46,9 @@ const VideoGallery = ({ searchInput }) => {
     // Filter videos based on searchInput
     const filteredVideos = videos.filter(video =>
         video.participantId.toLowerCase().includes(searchInput.toLowerCase()) ||
-        video.name.toLowerCase().includes(searchInput.toLowerCase()) ||
         video.postTitle.toLowerCase().includes(searchInput.toLowerCase()) ||
-        video.participantTalent.toLowerCase().includes(searchInput.toLowerCase())
+        video.participant?.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        video.participant?.talent.toLowerCase().includes(searchInput.toLowerCase())
     );
 
     if (filteredVideos.length === 0) {
@@ -162,7 +162,7 @@ const VideoCard = ({ video }) => {
                     />
                     <div>
                         <div className="text-xl font-semibold uppercase">{video?.participant?.name}</div>
-                        <div className="text-sm text-gray-600">{video?.participant?.email}</div>
+                        <div className="text-sm text-gray-600">{video?.participantId}</div>
                     </div>
                 </div>
                 <div className='flex justify-between items-center my-4 bg-white uppercase'>
