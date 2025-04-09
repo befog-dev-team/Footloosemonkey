@@ -5,38 +5,39 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
     try {
-        // Extract data from the request body with proper defaults
         const {
             email,
             name,
-            age = '', // Provide default empty string if undefined
+            age = '',
             guardianNumber,
             address,
             talent,
-            charge = 0, // Default to 0 if undefined
+            charge = 0,
             isPaid = false,
             paymentId,
             status = isPaid ? 'success' : 'pending',
             groupName,
             memberCount = 0,
             category,
-            members = [] // Array of group members {name, email}
+            members = []
         } = await req.json();
 
-        // Convert charge to number safely
         const paymentAmount = typeof charge === 'string' ?
             parseFloat(charge) || 0 :
             Number(charge) || 0;
 
-        // For group registrations, create registration record first
         let registrationId = null;
+        let participantIds = []; // Changed to array for multiple participants
+
+        // Handle Group Registration
         if (category === 'Group') {
+            // Create the group registration
             const registration = await prisma.registration.create({
                 data: {
                     category,
                     groupName: groupName || 'Unnamed Group',
-                    email: email || '', // Group contact email
-                    name: name || '', // Group contact name
+                    email: email || '',
+                    name: name || '',
                     guardianNumber: guardianNumber || '',
                     address: address || '',
                     talent: talent || '',
@@ -53,11 +54,24 @@ export async function POST(req) {
                 }
             });
             registrationId = registration.id;
-        }
 
-        // For individual participants, find or create participant record
-        let participantId = null;
-        if (category !== 'Group') {
+            // Create participants for each member and collect their IDs
+            participantIds = await Promise.all(members.map(async (member) => {
+                const participant = await prisma.participant.create({
+                    data: {
+                        name: member.name || 'Member',
+                        email: member.email || '',
+                        age: age || '',
+                        address: address || '',
+                        number: guardianNumber || '',
+                        talent: talent || ''
+                    }
+                });
+                return participant.id;
+            }));
+        }
+        // Handle Individual Registration
+        else {
             let participant = await prisma.participant.findFirst({
                 where: {
                     OR: [
@@ -90,24 +104,27 @@ export async function POST(req) {
                     }
                 });
             }
-            participantId = participant.id;
+            participantIds = [participant.id]; // Still use array for consistency
         }
 
-        // Create the payment record
+        // Create main payment record
         const payment = await prisma.payment.create({
             data: {
-                ...(participantId && { participantId }), // Only include if exists
-                ...(registrationId && { registrationId }), // Only include if exists
+                ...(registrationId && { registrationId }),
                 amount: paymentAmount,
                 paymentStatus: status,
                 paymentID: paymentId || `manual_${Date.now()}`,
                 ...(category === 'Group' && {
                     groupName: groupName || '',
                     memberCount: memberCount || 0
-                })
+                }),
+                // Connect participants using the many-to-many relation
+                participants: {
+                    connect: participantIds.map(id => ({ id }))
+                }
             },
             include: {
-                participant: true,
+                participants: true, // Changed from 'participant' to 'participants'
                 registration: {
                     include: {
                         members: true

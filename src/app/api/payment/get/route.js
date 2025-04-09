@@ -1,4 +1,4 @@
-import { prisma } from "../../../../lib/prisma"; // Adjust the import path as necessary
+import { prisma } from "../../../../lib/prisma";
 import { NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic';
@@ -7,7 +7,7 @@ export async function GET() {
     try {
         const extractData = await prisma.payment.findMany({
             include: {
-                participant: true,
+                participants: true,
                 registration: {
                     include: {
                         members: true

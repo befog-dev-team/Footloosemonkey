@@ -75,16 +75,14 @@ model Participant {
 
 model Payment {
   id             String        @id @default(uuid())
-  participantId  String? // Make optional for groups
-  participant    Participant?  @relation(fields: [participantId], references: [id])
-  registrationId String? // Add reference to registration
+  participants   Participant[]
   registration   Registration? @relation(fields: [registrationId], references: [id])
+  registrationId String?
   amount         Float
   paymentStatus  String
   paymentID      String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
-  // Add group-specific fields
   groupName      String?
   memberCount    Int?
 }

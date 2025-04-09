@@ -144,15 +144,10 @@ const PaymentCheckout = () => {
           // Copy the Payment ID to clipboard
           await navigator.clipboard.writeText(dummyPaymentId);
 
-          toast.success(
-            `Registration successful! Your Token ID = ${dummyPaymentId} has been processed.`,);
+          toast.success(`Registration successful! Your Token ID = ${dummyPaymentId} has been processed.`,);
 
-          toast.success(
-            `Your Token ID has been copied to your clipboard. Please keep it safe!`,);
-
-          setTimeout(() => {
-            router.push('/verifyuser');
-          }, 3000);
+          toast.success(`Your Token ID has been copied to your clipboard. Please keep it safe!`,);
+          router.push('/verifyuser');
         }
 
         setPaymentStatus(true);
@@ -293,9 +288,7 @@ const PaymentCheckout = () => {
 
     if (isPaid) {
       toast.success('You have already completed the payment. Redirecting...',);
-      setTimeout(() => {
-        router.push('/verifyuser');
-      }, 1000);
+      router.push('/verifyuser');
       return;
     }
 
