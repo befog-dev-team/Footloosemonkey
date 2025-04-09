@@ -38,9 +38,7 @@ const ForgetTokenId = () => {
 
                 // Copy the Payment ID to clipboard
                 await navigator.clipboard.writeText(response.data.paymentId);
-                setTimeout(() => {
-                    toast.success('Payment ID copied to clipboard!');
-                }, 500);
+                toast.success('Payment ID copied to clipboard!');
             } else {
                 throw new Error(response.data.message || 'Payment ID not found');
             }

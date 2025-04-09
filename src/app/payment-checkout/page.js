@@ -204,9 +204,7 @@ const PaymentCheckout = () => {
                   `Your Token ID has been copied to your clipboard. Please keep it safe!`,
                 );
 
-                setTimeout(() => {
-                  router.push('/verifyuser');
-                }, 3000);
+                router.push('/verifyuser');
               }
             } else {
               await handlePaymentData(response.razorpay_payment_id, 'failed');
