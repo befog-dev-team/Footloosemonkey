@@ -13,6 +13,8 @@ export async function POST(req) {
             address,
             talent,
             charge = 0,
+            taxAmount = 0,
+            totalAmount = 0,
             isPaid = false,
             paymentId,
             status = isPaid ? 'success' : 'pending',
@@ -22,57 +24,48 @@ export async function POST(req) {
             members = []
         } = await req.json();
 
-        const paymentAmount = typeof charge === 'string' ?
-            parseFloat(charge) || 0 :
-            Number(charge) || 0;
+        const paymentAmount = typeof charge === 'string' ? parseFloat(charge) || 0 : Number(charge) || 0;
+        const tax = typeof taxAmount === 'string' ? parseFloat(taxAmount) || 0 : Number(taxAmount) || 0;
+        const total = typeof totalAmount === 'string' ? parseFloat(totalAmount) || 0 : Number(totalAmount) || 0;
 
-        let registrationId = null;
-        let participantIds = []; // Changed to array for multiple participants
+        console.log('📦 Incoming Payment Data:', {
+            email, name, age, guardianNumber, address, talent, charge, tax, total,
+            isPaid, paymentId, status, groupName, memberCount, category, members
+        });
 
-        // Handle Group Registration
+        let mainParticipant;
+        let allParticipants = [];
+
+        // ✅ Handle Group Category
         if (category === 'Group') {
-            // Create the group registration
-            const registration = await prisma.registration.create({
-                data: {
-                    category,
-                    groupName: groupName || 'Unnamed Group',
-                    email: email || '',
-                    name: name || '',
-                    guardianNumber: guardianNumber || '',
-                    address: address || '',
-                    talent: talent || '',
-                    charge: paymentAmount.toString(),
-                    videoSharing: false,
-                    offensiveContent: false,
-                    incident: false,
-                    members: {
-                        create: members.map(member => ({
-                            name: member.name || 'Member',
-                            email: member.email || ''
-                        }))
-                    }
-                }
-            });
-            registrationId = registration.id;
+            if (!members || members.length === 0) {
+                return NextResponse.json({
+                    success: false,
+                    message: "No group members provided.",
+                }, { status: 400 });
+            }
 
-            // Create participants for each member and collect their IDs
-            participantIds = await Promise.all(members.map(async (member) => {
-                const participant = await prisma.participant.create({
+            const createdMembers = await Promise.all(members.map(async (member) => {
+                return await prisma.participant.create({
                     data: {
                         name: member.name || 'Member',
                         email: member.email || '',
-                        age: age || '',
+                        age: member.age?.toString() || '',
                         address: address || '',
                         number: guardianNumber || '',
-                        talent: talent || ''
+                        talent: talent || '',
+                        paymentId: paymentId || null
                     }
                 });
-                return participant.id;
             }));
+
+            allParticipants = createdMembers;
+            mainParticipant = createdMembers[0];
         }
-        // Handle Individual Registration
+
+        // ✅ Handle Individual Category
         else {
-            let participant = await prisma.participant.findFirst({
+            let existingParticipant = await prisma.participant.findFirst({
                 where: {
                     OR: [
                         { email },
@@ -81,8 +74,8 @@ export async function POST(req) {
                 }
             });
 
-            if (!participant) {
-                participant = await prisma.participant.create({
+            if (!existingParticipant) {
+                mainParticipant = await prisma.participant.create({
                     data: {
                         name: name || '',
                         email: email || '',
@@ -90,57 +83,57 @@ export async function POST(req) {
                         address: address || '',
                         number: guardianNumber || '',
                         talent: talent || '',
+                        paymentId: paymentId || null // ✅ Assign passed paymentId
                     }
                 });
             } else {
-                participant = await prisma.participant.update({
-                    where: { id: participant.id },
+                mainParticipant = await prisma.participant.update({
+                    where: { id: existingParticipant.id },
                     data: {
-                        name: name || participant.name,
-                        age: age ? age.toString() : participant.age,
-                        address: address || participant.address,
-                        number: guardianNumber || participant.number,
-                        talent: talent || participant.talent,
+                        name: name || existingParticipant.name,
+                        age: age ? age.toString() : existingParticipant.age,
+                        address: address || existingParticipant.address,
+                        number: guardianNumber || existingParticipant.number,
+                        talent: talent || existingParticipant.talent,
+                        paymentId: paymentId || existingParticipant.paymentId // ✅ Assign if available
                     }
                 });
             }
-            participantIds = [participant.id]; // Still use array for consistency
+
+            allParticipants = [mainParticipant];
         }
 
-        // Create main payment record
+        // ✅ Create Payment Record
         const payment = await prisma.payment.create({
             data: {
-                ...(registrationId && { registrationId }),
                 amount: paymentAmount,
+                taxAmount: tax,
+                totalAmount: total,
                 paymentStatus: status,
+                paymentMethod: paymentAmount === 0 ? 'free' : 'razorpay',
                 paymentID: paymentId || `manual_${Date.now()}`,
-                ...(category === 'Group' && {
-                    groupName: groupName || '',
-                    memberCount: memberCount || 0
-                }),
-                // Connect participants using the many-to-many relation
-                participants: {
-                    connect: participantIds.map(id => ({ id }))
-                }
-            },
-            include: {
-                participants: true, // Changed from 'participant' to 'participants'
-                registration: {
-                    include: {
-                        members: true
-                    }
-                }
+                participantId: mainParticipant.id,
+                groupName: category === 'Group' ? groupName || 'Unnamed Group' : null,
+                memberCount: category === 'Group' ? memberCount || members.length : null
             }
         });
 
         return NextResponse.json({
             success: true,
             message: "Payment data saved successfully.",
-            data: payment
+            data: {
+                paymentId: payment.id,
+                amount: payment.amount,
+                status: payment.paymentStatus,
+                paymentID: payment.paymentID,
+                groupName: payment.groupName,
+                memberCount: payment.memberCount,
+                participants: allParticipants
+            }
         });
 
     } catch (e) {
-        console.error('Payment processing error:', e);
+        console.error('❌ Payment processing error:', e);
         return NextResponse.json({
             success: false,
             message: "Something went wrong! Please try again.",

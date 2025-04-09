@@ -58,11 +58,37 @@ model Member {
   registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 }
 
+model Payment {
+  id              String        @id @default(uuid())
+  participant     Participant?  @relation(fields: [participantId], references: [id])
+  participantId   String?
+  registration    Registration? @relation(fields: [registrationId], references: [id])
+  registrationId  String?
+  amount          Float
+  taxAmount       Float?
+  totalAmount     Float
+  paymentStatus   String        @default("pending") // pending, success, failed
+  paymentMethod   String? // razorpay, free, etc.
+  paymentID       String        @unique
+  razorpayOrderId String?
+  invoiceNumber   String?       @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  groupName       String?
+  memberCount     Int?
+
+  // Add indexes for better query performance
+  @@index([paymentID])
+  @@index([paymentStatus])
+  @@index([createdAt])
+}
+
 model Participant {
   id        String   @id @default(uuid())
   name      String
   email     String
   age       String
+  paymentId String?
   address   String
   number    String
   talent    String
@@ -71,20 +97,6 @@ model Participant {
 
   submissions Submission[]
   payments    Payment[]
-}
-
-model Payment {
-  id             String        @id @default(uuid())
-  participants   Participant[]
-  registration   Registration? @relation(fields: [registrationId], references: [id])
-  registrationId String?
-  amount         Float
-  paymentStatus  String
-  paymentID      String
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  groupName      String?
-  memberCount    Int?
 }
 
 model Submission {

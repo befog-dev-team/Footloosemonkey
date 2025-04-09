@@ -85,6 +85,8 @@ const PaymentCheckout = () => {
     return 'N/A';
   };
 
+  console.log('User Data:', userData);
+
   // Handle payment data submission
   const handlePaymentData = async (paymentId, status) => {
     const paymentData = {
@@ -94,14 +96,19 @@ const PaymentCheckout = () => {
       address: userData.address,
       charge: userData.charge,
       talent: userData.talent,
-      ageCriteria: getAgeGroup(),
       age: userData.age,
+      category: userData.category,
       paymentId: paymentId,
       status: status,
+      taxAmount: igstAmount + cgstAmount,
+      totalAmount: totalIncludingGST,
       ...(userData.category === 'Group' && {
         groupName: userData.groupName,
         memberCount: userData.memberCount,
-        registrationId: userData.registrationId // If you have this
+        members: userData.memberNames.map((name, i) => ({
+          name,
+          email: userData.memberEmails[i] || null
+        }))
       })
     };
 

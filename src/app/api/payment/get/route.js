@@ -7,7 +7,7 @@ export async function GET() {
     try {
         const extractData = await prisma.payment.findMany({
             include: {
-                participants: true,
+                participant: true,  // Changed from participants to participant
                 registration: {
                     include: {
                         members: true
