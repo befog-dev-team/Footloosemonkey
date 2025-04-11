@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
                 <div className="bg-white shadow-lg p-8 rounded-lg">
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">Introduction</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        At Footloose Monkey, we value your privacy and are committed to protecting your personal information. This Privacy Policy outlines how we collect, use, and safeguard your data.
+                        At Footloosemonkey, we value your privacy and are committed to protecting your personal information. This Privacy Policy outlines how we collect, use, and safeguard your data.
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">Information We Collect</h2>

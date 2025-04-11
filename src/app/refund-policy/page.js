@@ -6,7 +6,7 @@ export default function RefundPolicy() {
 
                 <div className="bg-white shadow-lg p-8 rounded-lg">
                     <p className="text-sm text-semibold leading-8 text-gray-700 mb-4">
-                        At Footloose Monkey, we strive to provide a smooth and enjoyable experience for all participants in our online kids dance competitions. Please review the following payment and refund policy before making any payments for registration or participation fees:
+                        At Footloosemonkey, we strive to provide a smooth and enjoyable experience for all participants in our online kids dance competitions. Please review the following payment and refund policy before making any payments for registration or participation fees:
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">1. Registration Fees</h2>
@@ -21,7 +21,7 @@ export default function RefundPolicy() {
                         2.2. <strong>Full Refunds:</strong> A full refund will only be granted under the following circumstances:
                     </p>
                     <ul className="list-disc list-inside text-sm leading-8 text-gray-700 mb-4">
-                        <li>The event is cancelled by Footloose Monkey.</li>
+                        <li>The event is cancelled by Footloosemonkey.</li>
                         <li>Technical issues on the website prevent the participant from submitting an entry and these issues cannot be resolved.</li>
                         <li>Duplicate payments or overcharges due to system errors.</li>
                         <li><b>Refund will be initiate 5 to 7 working days to the Customer A/C</b></li>
@@ -35,7 +35,7 @@ export default function RefundPolicy() {
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">4. Changes to the Event</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        4.1. In the event of unforeseen circumstances such as technical issues, system failures, or changes to the competition schedule, Footloose Monkey reserves the right to modify the competition without offering a refund. In such cases, participants will be notified via email.
+                        4.1. In the event of unforeseen circumstances such as technical issues, system failures, or changes to the competition schedule, Footloosemonkey reserves the right to modify the competition without offering a refund. In such cases, participants will be notified via email.
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">5. Chargebacks</h2>

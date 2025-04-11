@@ -6,7 +6,7 @@ export default function TermsAndConditions() {
 
                 <div className="bg-white shadow-lg p-8 rounded-lg">
                     <p className="text-sm text-semibold leading-8 text-gray-700 mb-4">
-                        Welcome to Footloose Monkey. By registering and participating in our online kids dance competition, You agree to the following terms and conditions. Please read them carefully:
+                        Welcome to Footloosemonkey. By registering and participating in our online kids dance competition, You agree to the following terms and conditions. Please read them carefully:
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">1. Eligibility</h2>
@@ -20,7 +20,7 @@ export default function TermsAndConditions() {
                     <p className="text-sm leading-8 text-gray-700 mb-4">
                         2.1. To participate, parents or guardians must complete the registration process, providing accurate and up-to-date information.<br />
                         2.2. Each participant can only be registered once per competition cycle.<br />
-                        2.3. Registration implies acceptance of these terms, and all decisions made by Footloose Monkey and the competition judges.
+                        2.3. Registration implies acceptance of these terms, and all decisions made by Footloosemonkey and the competition judges.
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">3. Entry Submission</h2>
@@ -32,14 +32,14 @@ export default function TermsAndConditions() {
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">4. Content Ownership and Usage</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        4.1. By submitting an entry, you grant Footloose Monkey a non-exclusive, royalty-free, worldwide license to use, reproduce, and distribute the video on our website and social media platforms.<br />
-                        4.2. The participant (and their legal guardian) retains ownership of their submission but agrees that Footloose Monkey may use the content for promotional purposes.<br />
+                        4.1. By submitting an entry, you grant Footloosemonkey a non-exclusive, royalty-free, worldwide license to use, reproduce, and distribute the video on our website and social media platforms.<br />
+                        4.2. The participant (and their legal guardian) retains ownership of their submission but agrees that Footloosemonkey may use the content for promotional purposes.<br />
                         4.3. You warrant that you have all necessary rights and permissions to submit the video, including the use of third-party music, choreography, or visuals.
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">5. Judging and Prizes</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        5.1. All entries will be judged based on votes received from the audience, as well as a panel of experts selected by Footloose Monkey.<br />
+                        5.1. All entries will be judged based on votes received from the audience, as well as a panel of experts selected by Footloosemonkey.<br />
                         5.2. The decision of the judges is final and binding.<br />
                         5.3. Winners will be notified via the contact details provided during registration.
                     </p>
@@ -52,14 +52,14 @@ export default function TermsAndConditions() {
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">7. Liability and Indemnity</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        7.1. Footloose Monkey is not responsible for any technical issues, including but not limited to internet connectivity, that may affect the ability to submit an entry or participate in the competition.<br />
-                        7.2. By participating in the competition, you agree to release and hold harmless Footloose Monkey, its employees, and affiliates from any liability, loss, or damage resulting from your participation or use of the website.<br />
-                        7.3. Footloose Monkey reserves the right to disqualify any participant found to be violating these terms.
+                        7.1. Footloosemonkey is not responsible for any technical issues, including but not limited to internet connectivity, that may affect the ability to submit an entry or participate in the competition.<br />
+                        7.2. By participating in the competition, you agree to release and hold harmless Footloosemonkey, its employees, and affiliates from any liability, loss, or damage resulting from your participation or use of the website.<br />
+                        7.3. Footloosemonkey reserves the right to disqualify any participant found to be violating these terms.
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">8. Cancellation or Modification</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        8.1. Footloose Monkey reserves the right to cancel, modify, or suspend the competition in the event of unforeseen circumstances, including but not limited to fraud, technical failures, or other factors beyond our control.<br />
+                        8.1. Footloosemonkey reserves the right to cancel, modify, or suspend the competition in the event of unforeseen circumstances, including but not limited to fraud, technical failures, or other factors beyond our control.<br />
                         8.2. Any changes to the competition will be posted on the website, and participants will be notified via email.
                     </p>
 
@@ -71,7 +71,7 @@ export default function TermsAndConditions() {
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">10. Acceptance of Terms</h2>
                     <p className="text-sm leading-8 text-gray-700 mb-4">
-                        By accessing and participating in Footloose Monkey, you agree to comply with and be bound by these Terms and Conditions. If you do not agree to these terms, you should not participate in the competition.
+                        By accessing and participating in Footloosemonkey, you agree to comply with and be bound by these Terms and Conditions. If you do not agree to these terms, you should not participate in the competition.
                     </p>
 
                     <h2 className="text-xl font-semibold mb-6 text-sky-700">11. Contact Information</h2>

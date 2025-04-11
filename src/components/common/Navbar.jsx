@@ -179,7 +179,7 @@ const Navbar = () => {
               <div id='alert2' className="flex leading-6 lg:text-lg text-[#fff] font-rubik w-[95vw] text-center justify-center" style={{ display: 'none' }}>
                 <Link href={'/register'}>
                   <div className='md:text-xl leading-8 font-semibold sm:text-lg md:pl-[5vw] pl-0 w-[80vw] md:w-full'>
-                    <strong>Footloose Monkey</strong> competition started! Showcase your talent and shine! <strong>🌟</strong>
+                    <strong>Footloosemonkey</strong> competition started! Showcase your talent and shine! <strong>🌟</strong>
                   </div>
                 </Link>
               </div>
@@ -188,7 +188,7 @@ const Navbar = () => {
               {/* <div id='alert3' className="flex leading-6 lg:text-lg text-[#fff] font-rubik w-[95vw] text-center justify-center" style={{ display: 'none' }}>
                 <Link href={'/register'}>
                   <div className='md:text-xl leading-8 font-semibold sm:text-lg md:pl-[5vw] pl-0 w-[80vw] md:w-full'>
-                    Voting lines <strong>📈</strong> for <strong>Footloose Monkey</strong> open on <strong>11th November</strong>! Cast your vote now.  <strong>⭐</strong>
+                    Voting lines <strong>📈</strong> for <strong>Footloosemonkey</strong> open on <strong>11th November</strong>! Cast your vote now.  <strong>⭐</strong>
                   </div>
                 </Link>
               </div> */}
@@ -197,7 +197,7 @@ const Navbar = () => {
               {/* <div id='alert4' className="flex leading-6 lg:text-lg text-[#fff] font-rubik w-[95vw] text-center justify-center" style={{ display: 'none' }}>
                 <Link href={'/register'}>
                   <div className='md:text-xl leading-8 font-semibold sm:text-lg md:pl-[5vw] pl-0 w-[83vw] md:w-full'>
-                    Winners of the <strong>Footloose Monkey</strong> competition will be declared on <strong>20th November 2024</strong>! Stay tuned.
+                    Winners of the <strong>Footloosemonkey</strong> competition will be declared on <strong>20th November 2024</strong>! Stay tuned.
                   </div>
                 </Link>
               </div> */}

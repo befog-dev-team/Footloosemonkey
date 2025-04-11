@@ -42,7 +42,7 @@ export async function POST(req) {
         const mailOptions = {
             from: AUTH_EMAIL,
             to: userEmail,
-            subject: "Your Participant Credentials from Footloose Monkey",
+            subject: "Your Participant Credentials from Footloosemonkey",
             html: `
             <!DOCTYPE html>
             <html lang="en">
@@ -141,12 +141,12 @@ export async function POST(req) {
             <body>
                 <div class="container">
                     <div class="header">
-                        <h1>Welcome to Footloose Monkey!</h1>
+                        <h1>Welcome to Footloosemonkey!</h1>
                         <p>Your credentials are ready to get started.</p>
                     </div>
                     <div class="content">
                         <h2>Hello, ${userName}!</h2>
-                        <p>Thank you for joining Footloose Monkey. We are excited to have you as a part of our community of talented participants.</p>
+                        <p>Thank you for joining Footloosemonkey. We are excited to have you as a part of our community of talented participants.</p>
                         <p>Here are your credentials to access your account and start uploading your videos:</p>
         
                         <div class="credentials">
@@ -163,7 +163,7 @@ export async function POST(req) {
                     </div>
         
                     <div class="footer">
-                        <p>&copy; 2024 Footloose Monkey. All Rights Reserved.</p>
+                        <p>&copy; 2024 Footloosemonkey. All Rights Reserved.</p>
                         <p><a href="https://www.footloosemonkey.club/privacy-policy">Privacy Policy</a> | <a href="https://www.footloosemonkey.club/terms-condition-policy">Terms and Conditions</a></p>
                         <p>Need help? <a href="mailto:contact@footloosemonkey.club">Contact Support</a></p>
                     </div>

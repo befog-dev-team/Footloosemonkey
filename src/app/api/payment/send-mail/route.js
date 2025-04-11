@@ -30,7 +30,7 @@ export async function POST(request) {
     let recipients = [];
 
     if (category === 'Group') {
-      subject = `Footloose Monkey - Group Registration Confirmation (${groupName})`;
+      subject = `Footloosemonkey - Group Registration Confirmation (${groupName})`;
 
       // Create members list HTML - prioritize 'members' array if available
       let membersListHtml = '';
@@ -55,7 +55,7 @@ export async function POST(request) {
       emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
           <div style="background-color: #004873; padding: 20px; text-align: center; border-radius: 5px 5px 0 0;">
-            <h1 style="color: white; margin: 0;">Footloose Monkey</h1>
+            <h1 style="color: white; margin: 0;">Footloosemonkey</h1>
             <p style="color: #a3d0ff; margin: 5px 0 0;">Talent Competition</p>
           </div>
           
@@ -63,7 +63,7 @@ export async function POST(request) {
             <h2 style="color: #004873; margin-top: 0;">Group Registration Confirmation</h2>
             <p>Hello ${name || 'Team'},</p>
             
-            <p>Thank you for registering your group <strong>${groupName}</strong> for the Footloose Monkey talent competition!</p>
+            <p>Thank you for registering your group <strong>${groupName}</strong> for the Footloosemonkey talent competition!</p>
             
             <div style="background-color: #f5f9fc; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #e1e8ed;">
               <h3 style="color: #004873; margin-top: 0;">Registration Details</h3>
@@ -102,11 +102,11 @@ export async function POST(request) {
       // Remove duplicates
       recipients = [...new Set(recipients)];
     } else {
-      subject = `Footloose Monkey - Registration Confirmation (${name})`;
+      subject = `Footloosemonkey - Registration Confirmation (${name})`;
       emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
           <div style="background-color: #004873; padding: 20px; text-align: center; border-radius: 5px 5px 0 0;">
-            <h1 style="color: white; margin: 0;">Footloose Monkey</h1>
+            <h1 style="color: white; margin: 0;">Footloosemonkey</h1>
             <p style="color: #a3d0ff; margin: 5px 0 0;">Talent Competition</p>
           </div>
           
@@ -114,7 +114,7 @@ export async function POST(request) {
             <h2 style="color: #004873; margin-top: 0;">Registration Confirmation</h2>
             <p>Hello ${name},</p>
             
-            <p>Thank you for registering for the Footloose Monkey talent competition!</p>
+            <p>Thank you for registering for the Footloosemonkey talent competition!</p>
             
             <div style="background-color: #f5f9fc; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #e1e8ed;">
               <h3 style="color: #004873; margin-top: 0;">Registration Details</h3>
@@ -143,7 +143,7 @@ export async function POST(request) {
       if (!recipientEmail) return Promise.resolve(); // Skip invalid emails
 
       return transporter.sendMail({
-        from: `"Footloose Monkey" <${process.env.EMAIL_USERNAME}>`,
+        from: `"Footloosemonkey" <${process.env.EMAIL_USERNAME}>`,
         to: recipientEmail,
         subject: subject,
         html: emailHtml,
