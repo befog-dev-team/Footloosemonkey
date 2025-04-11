@@ -50,7 +50,7 @@ const About = () => {
         transition={{ duration: 0.8 }}
         className="text-center max-w-4xl"
       >
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
           About Footloosemonkey
         </h1>
         <p className="text-xl text-gray-700 mt-6">
