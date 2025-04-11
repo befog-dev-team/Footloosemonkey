@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Footloosemonkey",
-  description: "Join Footloosemonkey, the ultimate talent competition for kids aged 6-12! Showcase your skills in dancing, singing, acting, and more in a fun, encouraging environment. Discover and celebrate young talents today!",
+  description: "Join Footloosemonkey, the ultimate talent competition for any age! Showcase your skills in dancing, singing, acting, and more in a fun, encouraging environment. Discover and celebrate young talents today!",
   siteUrl: "https://www.footloosemonkey.club",
   keywords: [
     "Footloosemonkey",

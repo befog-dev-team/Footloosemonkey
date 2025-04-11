@@ -2,52 +2,122 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaMicrophone, FaChild, FaTrophy, FaMusic, FaTheaterMasks } from 'react-icons/fa';
+import { GiLoveSong } from "react-icons/gi";
 
 const Talent = () => {
   const router = useRouter();
-  const texts = ["Singing", "Dancing", "Mimicry", "Acting"];
 
-  const handleNavigate = (text) => {
-    router.push(`/${text.toLowerCase()}`);
+  const talentCategories = [
+    {
+      name: "Singing",
+      icon: <FaMusic className="text-3xl" />,
+      desc: "Showcase your vocal range and musicality",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      name: "Dancing",
+      icon: <GiLoveSong className="text-3xl" />,
+      desc: "Express yourself through movement and rhythm",
+      color: "from-blue-500 to-teal-400"
+    },
+    {
+      name: "Mimicry",
+      icon: <FaMicrophone className="text-3xl" />,
+      desc: "Impress with your voice imitation skills",
+      color: "from-amber-500 to-orange-500"
+    },
+    {
+      name: "Acting",
+      icon: <FaTheaterMasks className="text-3xl" />,
+      desc: "Bring characters to life with your performance",
+      color: "from-red-500 to-rose-500"
+    },
+    // {
+    //   name: "Comedy",
+    //   icon: <FaChild className="text-3xl" />,
+    //   desc: "Make the world laugh with your humor",
+    //   color: "from-green-500 to-emerald-400"
+    // },
+    // {
+    //   name: "Prizes",
+    //   icon: <FaTrophy className="text-3xl" />,
+    //   desc: "Win exciting rewards and recognition",
+    //   color: "from-yellow-500 to-amber-400"
+    // }
+  ];
+
+  const handleNavigate = (category) => {
+    router.push(`/${category.toLowerCase()}`);
   };
 
   return (
-    <div className='w-full flex flex-col items-center justify-center p-4 bg-[aliceblue]'>
-      <h1 className='text-5xl mt-14 md:mt-2 text-center font-semibold mb-10 text-sky-700'>
-        Showcase your Talent
-      </h1>
+    <div className='w-full flex flex-col items-center justify-center py-16 px-4 bg-gradient-to-b from-blue-50 to-white'>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="text-center max-w-4xl"
+      >
+        <h1 className='text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500'>
+          Discover Your Talent
+        </h1>
+        <p className='text-xl text-gray-600 mb-12'>
+          Where stars are born and dreams take center stage
+        </p>
+      </motion.div>
 
-      <div className="w-[100%] md:w-[77%] flex space-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-[#6e96cf] scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
-        {texts.map((text, index) => (
-          <motion.div
-            key={index}
-            className="min-w-[200px] md:rounded-xl sm:min-w-[250px] overflow-hidden p-4 sm:p-6 bg-[#6e96cf] border border-gray-200 rounded-lg shadow-lg flex-shrink-0 cursor-pointer"
-            onClick={() => handleNavigate(text)}
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.3 }}
-          >
-            <svg className="w-7 h-7 text-white mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M18 5h-.7c.229-.467.349-.98.351-1.5a3.5 3.5 0 0 0-3.5-3.5c-1.717 0-3.215 1.2-4.331 2.481C8.4.842 6.949 0 5.5 0A3.5 3.5 0 0 0 2 3.5c.003.52.123 1.033.351 1.5H2a2 2 0 0 0-2 2v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2ZM8.058 5H5.5a1.5 1.5 0 0 1 0-3c.9 0 2 .754 3.092 2.122-.219.337-.392.635-.534.878Zm6.1 0h-3.742c.933-1.368 2.371-3 3.739-3a1.5 1.5 0 0 1 0 3h.003ZM11 13H9v7h2v-7Zm-4 0H2v5a2 2 0 0 0 2 2h3v-7Zm6 0v7h3a2 2 0 0 0 2-2v-5h-5Z"/>
-            </svg>
-            <h5 className="mb-2 text-2xl font-semibold tracking-tight text-white">
-              {text}
-            </h5>
-            <p className="mb-3 font-normal text-white">
-              Discover your passion and shine on stage!
-            </p>
-            <a href="#" className="inline-flex font-medium items-center text-white hover:underline">
-              Explore Now
-              <svg className="w-3 h-3 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
-              </svg>
-            </a>
-          </motion.div>
-        ))}
+      <div className="w-full max-w-7xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+          {talentCategories.map((category, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -10 }}
+              onClick={() => handleNavigate(category.name)}
+              className={`bg-gradient-to-r ${category.color} rounded-2xl p-0.5 shadow-lg cursor-pointer group`}
+            >
+              <div className="bg-white rounded-2xl p-6 h-full transition-all duration-300 group-hover:bg-opacity-90">
+                <div className={`mb-4 inline-flex p-4 rounded-full bg-gradient-to-r ${category.color} text-white`}>
+                  {category.icon}
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">{category.name}</h3>
+                <p className="text-gray-600 mb-4">{category.desc}</p>
+                <div className="flex items-center text-blue-600 font-medium">
+                  Explore category
+                  <svg className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                  </svg>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
-      <p className='text-lg text-center mt-10 px-6 max-w-[800px] font-semibold'>
-        Enroll your child today to let their talent shine and be celebrated!
-      </p>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        viewport={{ once: true }}
+        className="mt-16 text-center max-w-2xl"
+      >
+        <p className='text-xl text-gray-700 mb-8'>
+          Join our community of talented performers and take your skills to the next level!
+        </p>
+        <motion.button
+          onClick={() => router.push('/register')}
+          className="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold rounded-full hover:shadow-lg transition-all"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Register Now
+        </motion.button>
+      </motion.div>
     </div>
   );
 };

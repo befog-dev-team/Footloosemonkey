@@ -1,25 +1,79 @@
 import Link from 'next/link';
 import React from 'react';
+import { motion } from 'framer-motion';
+
+// Animation variants
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.8 } }
+};
 
 const Certificate = () => {
   return (
-    <div className="bg-[aliceblue] w-full px-4 md:px-8 lg:px-16 py-8 md:py-12 lg:py-16">
+    <motion.div
+      initial="hidden"
+      animate="show"
+      variants={fadeIn}
+      className="bg-[aliceblue] w-full px-4 md:px-8 lg:px-16 py-8 md:py-12 lg:py-16"
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#2c3e50] mb-4">
+        <motion.div
+          variants={item}
+          className="text-center mb-12"
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#2c3e50] mb-4"
+          >
             Certifications, <span className="text-[#e74c3c]">Prizes</span> & <span className="text-[#3498db]">Gifts</span>
-          </h1>
-          <div className="w-24 h-1 bg-[#e74c3c] mx-auto mb-6"></div>
-          <p className="text-lg md:text-xl text-[#34495e] max-w-3xl mx-auto">
+          </motion.h1>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="w-24 h-1 bg-[#e74c3c] mx-auto mb-6"
+          ></motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-lg md:text-xl text-[#34495e] max-w-3xl mx-auto"
+          >
             Validate your skills, gain recognition, and win exciting prizes and gifts with Footloosemonkey certifications
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Content Sections - Now 3 columns */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid md:grid-cols-3 gap-8 mb-12"
+        >
           {/* Certification Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#e74c3c]">
+          <motion.div
+            variants={item}
+            whileHover={{ y: -5 }}
+            className="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#e74c3c]"
+          >
             <div className="flex items-center mb-4">
               <div className="bg-[#e74c3c] p-2 rounded-full mr-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,10 +86,14 @@ const Certificate = () => {
               Our industry-recognized certifications validate your skills and enhance your professional credibility.
               Each certificate helps you stand out in competitive job markets.
             </p>
-          </div>
+          </motion.div>
 
           {/* Prizes Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#3498db]">
+          <motion.div
+            variants={item}
+            whileHover={{ y: -5 }}
+            className="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#3498db]"
+          >
             <div className="flex items-center mb-4">
               <div className="bg-[#3498db] p-2 rounded-full mr-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,10 +106,14 @@ const Certificate = () => {
               Win substantial cash rewards for your achievements. Our prize pool rewards top performers
               across all competitions and skill levels.
             </p>
-          </div>
+          </motion.div>
 
           {/* New Gifts Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#2ecc71]">
+          <motion.div
+            variants={item}
+            whileHover={{ y: -5 }}
+            className="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#2ecc71]"
+          >
             <div className="flex items-center mb-4">
               <div className="bg-[#2ecc71] p-2 rounded-full mr-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,13 +126,31 @@ const Certificate = () => {
               Receive premium merchandise, tech gadgets, and exclusive Footloosemonkey swag. These gifts
               are designed to celebrate your success in style.
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Enhanced Benefits Section */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center text-[#2c3e50] mb-8">Why Participate?</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-white rounded-lg shadow-md p-8 mb-12"
+        >
+          <motion.h2
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center text-[#2c3e50] mb-8"
+          >
+            Why Participate?
+          </motion.h2>
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-6"
+          >
             {[
               {
                 icon: '📜',
@@ -88,19 +168,57 @@ const Certificate = () => {
                 desc: 'Receive exclusive merchandise and tech gadgets'
               }
             ].map((item, index) => (
-              <div key={index} className="text-center p-4 hover:bg-[#f8f9fa] rounded-lg transition">
-                <div className="text-4xl mb-4">{item.icon}</div>
+              <motion.div
+                key={index}
+                variants={item}
+                whileHover={{ scale: 1.05 }}
+                className="text-center p-4 hover:bg-[#f8f9fa] rounded-lg transition"
+              >
+                <motion.div
+                  animate={{
+                    rotate: [0, 10, -10, 0],
+                    scale: [1, 1.1, 1.1, 1]
+                  }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatDelay: 3
+                  }}
+                  className="text-4xl mb-4"
+                >
+                  {item.icon}
+                </motion.div>
                 <h3 className="text-xl font-semibold text-[#2c3e50] mb-2">{item.title}</h3>
                 <p className="text-[#7f8c8d]">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Gift Showcase Section */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center text-[#2c3e50] mb-8">Featured Gifts</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="bg-white rounded-lg shadow-md p-8 mb-12"
+        >
+          <motion.h2
+            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            transition={{ delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center text-[#2c3e50] mb-8"
+          >
+            Featured Gifts
+          </motion.h2>
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid sm:grid-cols-2 md:grid-cols-4 gap-6"
+          >
             {[
               {
                 name: 'Premium Tech Kit',
@@ -119,31 +237,79 @@ const Certificate = () => {
                 desc: 'Mystery gift package'
               }
             ].map((gift, index) => (
-              <div key={index} className="bg-[#f8f9fa] p-4 rounded-lg text-center border border-[#e0e0e0]">
-                <div className="bg-[#e74c3c] text-white p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+              <motion.div
+                key={index}
+                variants={item}
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 10px 20px rgba(0,0,0,0.1)"
+                }}
+                className="bg-[#f8f9fa] p-4 rounded-lg text-center border border-[#e0e0e0]"
+              >
+                <motion.div
+                  animate={{
+                    rotate: [0, 5, -5, 0],
+                    y: [0, -5, 0]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                  className="bg-[#e74c3c] text-white p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center"
+                >
                   <span className="text-2xl">🎁</span>
-                </div>
+                </motion.div>
                 <h3 className="text-lg font-semibold text-[#2c3e50]">{gift.name}</h3>
                 <p className="text-sm text-[#7f8c8d]">{gift.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* CTA Section */}
-        <div className="text-center bg-gradient-to-r from-[#e74c3c] to-[#3498db] p-8 rounded-lg text-white">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Win Amazing Rewards?</h2>
-          <p className="text-lg mb-6 max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center bg-gradient-to-r from-[#e74c3c] to-[#3498db] p-8 rounded-lg text-white"
+        >
+          <motion.h2
+            animate={{
+              x: [0, 5, -5, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity
+            }}
+            className="text-2xl md:text-3xl font-bold mb-4"
+          >
+            Ready to Win Amazing Rewards?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-lg mb-6 max-w-2xl mx-auto"
+          >
             Join our community of achievers and get recognized for your talents
-          </p>
+          </motion.p>
           <Link href="/register">
-            <button className="bg-white text-[#2c3e50] font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transition">
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 5px 15px rgba(255,255,255,0.3)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white text-[#2c3e50] font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transition"
+            >
               Register Now
-            </button>
+            </motion.button>
           </Link>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,29 +1,71 @@
+"use client"
 import Link from 'next/link';
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const PricingPlans = ({ groupACharge, groupBCharge, groupCCharge }) => {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                duration: 0.6,
+                ease: "easeOut"
+            }
+        }
+    };
+
+    const hoverEffect = {
+        scale: 1.03,
+        transition: { duration: 0.3 }
+    };
+
+    const tapEffect = {
+        scale: 0.98
+    };
+
     return (
-        <div className='bg-[aliceblue]'>
-            <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8 ">
-                <div className="text-center mb-12">
+        <div className='bg-gradient-to-b from-blue-50 to-white'>
+            <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-12"
+                >
                     <p className="text-[18px] font-[700] text-blue-600 uppercase mb-2 tracking-wide">Pricing</p>
                     <h1 className="text-[50px] font-[700] text-[#004873] mb-4">Affordable pricing plans</h1>
                     <p className="text-[18px] font-[400] text-[#6F6C90] max-w-[579px] mx-auto">
                         Pick the right category and showcase your talent at FootlooseMonkey – from solo young stars to dazzling group acts!
                     </p>
-                </div>
+                </motion.div>
 
-                {/* <div className="flex items-center justify-center gap-2 mb-12">
-                    <p className="text-[18px] font-[400] text-[#170F49]">How many users you have?</p>
-                    <div className="w-[117px] h-[52px] bg-white border boder-[1px] border-[#D9DBE9] rounded-[15px] flex items-center justify-center">
-                        <p className='text-[#170F49] text-[20px] font-[700]'>10</p>
-                    </div>
-                    <span className="text-[#170F49] text-[18px] font-[700]">users</span>
-                </div> */}
-
-                <div className="flex flex-wrap justify-center gap-8">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="flex flex-wrap justify-center gap-8"
+                >
                     {/* Young Category Plan */}
-                    <div className="w-80 bg-[bisque] rounded-xl p-6 flex flex-col shadow-md">
+                    <motion.div
+                        variants={itemVariants}
+                        whileHover={hoverEffect}
+                        whileTap={tapEffect}
+                        className="w-80 bg-[bisque] rounded-xl p-6 flex flex-col shadow-md hover:shadow-lg transition-shadow"
+                    >
                         <div className="text-left mb-4">
                             <p className="font-semibold text-gray-800">Age (5-12 years)</p>
                             <h3 className="text-xl font-bold">Kid Stars</h3>
@@ -36,41 +78,54 @@ const PricingPlans = ({ groupACharge, groupBCharge, groupCCharge }) => {
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Solo performance slot
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Professional stage setup
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Certificate of participation
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Access to backstage workshops
-                            </li>
+                            {[
+                                "Solo performance slot",
+                                "Professional stage setup",
+                                "Certificate of participation",
+                                "Access to backstage workshops"
+                            ].map((item, index) => (
+                                <motion.li
+                                    key={index}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 * index }}
+                                    viewport={{ once: true }}
+                                    className="flex items-center"
+                                >
+                                    <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {item}
+                                </motion.li>
+                            ))}
                         </ul>
                         <Link href="/register" className='w-full'>
-                            <button className="mt-auto w-full h-[72px] rounded-[96px] text-[18px] font-[700] bg-[#70523a] hover:bg-[#895931] text-white">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="mt-auto w-full h-[72px] rounded-[96px] text-[18px] font-[700] bg-[#70523a] hover:bg-[#895931] text-white"
+                            >
                                 Get started
-                            </button>
+                            </motion.button>
                         </Link>
-                    </div>
+                    </motion.div>
 
                     {/* Group Category Plan */}
-                    <div className="w-80 bg-blue-900 text-white rounded-xl p-6 flex flex-col shadow-xl relative">
-                        <div className="absolute flex justify-center items-center top-4 w-[98px] h-[40px] right-4 bg-white text-blue-700 text-[14px] rounded-[10px] font-semibold">Popular</div>
+                    <motion.div
+                        variants={itemVariants}
+                        whileHover={hoverEffect}
+                        whileTap={tapEffect}
+                        className="w-80 bg-blue-900 text-white rounded-xl p-6 flex flex-col shadow-xl relative hover:shadow-2xl"
+                    >
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1, rotate: [0, 10, -10, 0] }}
+                            transition={{ delay: 0.4, type: "spring" }}
+                            viewport={{ once: true }}
+                            className="absolute flex justify-center items-center top-4 w-[98px] h-[40px] right-4 bg-white text-blue-700 text-[14px] rounded-[10px] font-semibold"
+                        >
+                            Popular
+                        </motion.div>
                         <div className="text-left mb-4">
                             <p className="font-semibold text-white/90">Any Age</p>
                             <p className="text-xs text-white/90">2 to 5 performers</p>
@@ -84,40 +139,45 @@ const PricingPlans = ({ groupACharge, groupBCharge, groupCCharge }) => {
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-white text-[#6E96CF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Extended performance time
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-white text-[#6E96CF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Group stage coordination
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-white text-[#6E96CF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Feature on official website
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-white text-[#6E96CF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Group participation certificates
-                            </li>
+                            {[
+                                "Extended performance time",
+                                "Group stage coordination",
+                                "Feature on official website",
+                                "Group participation certificates"
+                            ].map((item, index) => (
+                                <motion.li
+                                    key={index}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 * index }}
+                                    viewport={{ once: true }}
+                                    className="flex items-center"
+                                >
+                                    <svg className="h-[20px] w-[20px] rounded-full bg-white text-[#6E96CF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {item}
+                                </motion.li>
+                            ))}
                         </ul>
                         <Link href="/register" className='w-full'>
-                            <button className="mt-auto w-full h-[72px] rounded-[96px] text-[18px] font-[700] bg-white text-blue-900 hover:bg-gray-100">
+                            <motion.button
+                                whileHover={{ scale: 1.02, backgroundColor: "#f0f4ff" }}
+                                whileTap={{ scale: 0.98 }}
+                                className="mt-auto w-full h-[72px] rounded-[96px] text-[18px] font-[700] bg-white text-blue-900 hover:bg-gray-100"
+                            >
                                 Get started
-                            </button>
+                            </motion.button>
                         </Link>
-                    </div>
+                    </motion.div>
 
                     {/* Teenager Category Plan */}
-                    <div className="w-80 bg-[bisque] rounded-xl p-6 flex flex-col shadow-md">
+                    <motion.div
+                        variants={itemVariants}
+                        whileHover={hoverEffect}
+                        whileTap={tapEffect}
+                        className="w-80 bg-[bisque] rounded-xl p-6 flex flex-col shadow-md hover:shadow-lg"
+                    >
                         <div className="text-left mb-4">
                             <p className="font-semibold text-gray-800">Age (13-19 years)</p>
                             <h3 className="text-xl font-bold">Teenager Performers</h3>
@@ -130,38 +190,38 @@ const PricingPlans = ({ groupACharge, groupBCharge, groupCCharge }) => {
                         </div>
                         <p className="font-bold text-left mb-4">What&apos;s included</p>
                         <ul className="text-left text-sm space-y-2 mb-6">
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Solo performance slot
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                High-quality video footage
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Digital certificate
-                            </li>
-                            <li>
-                                <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                                Chance to win category prizes
-                            </li>
+                            {[
+                                "Solo performance slot",
+                                "High-quality video footage",
+                                "Digital certificate",
+                                "Chance to win category prizes"
+                            ].map((item, index) => (
+                                <motion.li
+                                    key={index}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 * index }}
+                                    viewport={{ once: true }}
+                                    className="flex items-center"
+                                >
+                                    <svg className="h-[20px] w-[20px] rounded-full bg-[#70523a] text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {item}
+                                </motion.li>
+                            ))}
                         </ul>
                         <Link href="/register" className='w-full'>
-                            <button className="mt-auto w-full h-[72px] rounded-[96px] text-[18px] font-[700] bg-[#70523a] hover:bg-[#895931] text-white">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="mt-auto w-full h-[72px] rounded-[96px] text-[18px] font-[700] bg-[#70523a] hover:bg-[#895931] text-white"
+                            >
                                 Get started
-                            </button>
+                            </motion.button>
                         </Link>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             </div>
         </div>
     );

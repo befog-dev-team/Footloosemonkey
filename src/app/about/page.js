@@ -59,10 +59,16 @@ export default function AboutUs() {
 
                 <div className="text-center mb-12">
                     <p className="text-xl leading-8 text-gray-700">
-                        Welcome to Footloosemonkey, the ultimate platform for young and talented performers! We are passionate about giving children aged 6-12 a stage to express their creativity in singing, dancing, acting, and mimicry.
+                        Welcome to Footloosemonkey – the ultimate stage for performers of all ages and backgrounds! Whether you&apos;re a child taking your first step, a teen pursuing your passion, an adult exploring your creative side, or part of a group ready to shine together—this is your spotlight.
                     </p>
                     <p className="text-xl leading-8 text-gray-700 mt-6">
-                        At Footloosemonkey, we believe that every child has a unique talent waiting to shine. Our competition is the perfect place for kids to showcase their skills.
+                        From singing, dancing, acting, mimicry, and more, Footloosemonkey celebrates every form of talent. We believe that creativity knows no age or limit, and everyone deserves a chance to express themselves, grow, and be celebrated.
+                    </p>
+                    <p className="text-xl leading-8 text-gray-700 mt-6">
+                        Our platform welcomes both solo performers and groups, offering fun-filled competitions, meaningful exposure, and a supportive community that helps you thrive.
+                    </p>
+                    <p className="text-xl leading-8 text-gray-700 mt-6">
+                        At Footloosemonkey, it’s not just about winning—it’s about shining. Together.
                     </p>
                 </div>
 
