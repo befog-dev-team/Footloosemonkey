@@ -328,7 +328,7 @@ const UploadForm = () => {
                                         type="submit"
                                         disabled={loading || !formData.postTitle || !formData.description}
                                         className={`w-full flex justify-center items-center px-6 py-3.5 border border-transparent rounded-lg shadow-sm text-base font-medium transition 
-    ${loading || !formData.postTitle || !formData.description
+    ${loading || !formData.postTitle || !formData.description || error
                                                 ? 'bg-gray-400 text-white cursor-not-allowed'
                                                 : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
                                             }
