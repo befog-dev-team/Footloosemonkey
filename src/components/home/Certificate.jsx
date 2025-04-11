@@ -160,7 +160,7 @@ const Certificate = () => {
               {
                 icon: '💵',
                 title: 'Cash Rewards',
-                desc: 'Win up to ₹50,000 in prize money for top performers'
+                desc: 'Win exciting Cash Rewards for top performers'
               },
               {
                 icon: '🎁',
