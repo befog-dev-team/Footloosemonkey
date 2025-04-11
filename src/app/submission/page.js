@@ -326,8 +326,14 @@ const UploadForm = () => {
                                 <div className="pt-2">
                                     <button
                                         type="submit"
-                                        disabled={loading}
-                                        className={`w-full flex justify-center items-center px-6 py-3.5 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                        disabled={loading || !formData.postTitle || !formData.description}
+                                        className={`w-full flex justify-center items-center px-6 py-3.5 border border-transparent rounded-lg shadow-sm text-base font-medium transition 
+    ${loading || !formData.postTitle || !formData.description
+                                                ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+                                            }
+    focus:outline-none focus:ring-2 focus:ring-offset-2 ${loading || !formData.postTitle || !formData.description ? '' : 'focus:ring-blue-500'
+                                            }`}
                                     >
                                         {loading ? (
                                             <>
@@ -341,6 +347,7 @@ const UploadForm = () => {
                                             </>
                                         )}
                                     </button>
+
                                 </div>
                             </div>
                         </form>
