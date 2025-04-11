@@ -1,14 +1,14 @@
 "use client";
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
-import { motion, useAnimation, useInView } from 'framer-motion'; // Ensure to import correctly
+import { motion, useAnimation, useInView } from 'framer-motion';
 import Link from 'next/link';
 
 const Mission = () => {
-  const [currentImage, setCurrentImage] = useState(0); // State for current image index in slider
-  const controls = useAnimation(); // Controls for Framer Motion animation
-  const ref = React.useRef(null); // Create a ref to attach to the component
-  const inView = useInView(ref, { triggerOnce: true, threshold: 0.1 }); // Detect when the component is in view
+  const [currentImage, setCurrentImage] = useState(0);
+  const controls = useAnimation();
+  const ref = React.useRef(null);
+  const inView = useInView(ref, { triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
     if (inView) {
@@ -42,7 +42,8 @@ const Mission = () => {
       variants={fadeInVariants}
       className="w-full min-h-[630px] flex flex-col-reverse pt-14 md:pt-0 lg:flex-row items-center bg-[aliceblue]"
     >
-      <div className="md:w-full w-[90%] lg:w-1/2 flex justify-center lg:order-1 order-2 mb-2 lg:mb-0">
+      {/* Image Slider Section */}
+      <div className="md:w-full w-[90%] lg:w-1/2 flex justify-center lg:order-1 order-2 mb-2 lg:mb-0 relative">
         <motion.div
           key={currentImage}
           initial="hidden"
@@ -52,27 +53,58 @@ const Mission = () => {
           className="w-full max-w-md"
         >
           <Image
-            src={currentImage === 0 ? "/mission.png" : "/mission2.jpg"} // Change this to other image paths if you have more
+            src={currentImage === 0 ? "/mission.png" : "/mission2.jpg"}
             width={654}
             height={401}
-            className="mx-auto"
-            alt="Mission Image"
+            className="mx-auto rounded-xl shadow-xl border-4 border-white"
+            alt="Talent showcase"
           />
         </motion.div>
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+          {[0, 1].map((index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImage(index)}
+              className={`w-3 h-3 rounded-full ${currentImage === index ? 'bg-[#2E476A]' : 'bg-gray-300'}`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Content Section */}
       <div className="w-full flex flex-col items-center justify-center lg:w-1/2 lg:order-2 order-1 px-4 md:px-6 lg:px-16 py-8">
-        <h1 className="lg:text-[35px] mb-6 text-sky-700 text-5xl mt-14 md:mt-2 text-center font-semibold">Our Mission</h1>
-        <p className="text-lg text-center md:text-justify mb-6">
-          Welcome to Footloosemonkey, where young stars shine bright! Our mission is to provide a fun, safe, and inspiring platform for children aged 6 to 10 to showcase their talents in singing, dancing, acting, mimicry, and more. At Footloosemonkey, we believe every child is unique and talented in their own way, and we are here to celebrate and nurture that talent. Join us in our exciting competitions, make new friends, and discover your amazing potential!
-        </p>
-        <div>
-          <Link href="/about">
-            <button className="px-6 py-2 bg-[#004873] text-white font-semibold rounded hover:bg-[#0076ff] transition duration-300">
-              Know More
-            </button>
-          </Link>
+        <div className="text-center max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#2E476A] to-[#3498db]">
+            Where Talent Knows No Age!
+          </h1>
+
+          <div className="space-y-6 text-lg">
+            <p className="text-gray-700 leading-relaxed">
+              At <span className="font-bold text-[#2E476A]">Footloosemonkey</span>, we believe that talent has no limits! Our mission is to provide a fun, safe, and inspiring platform for individuals of all ages to showcase their skills in singing, dancing, acting, mimicry, and more.
+            </p>
+
+            <p className="text-gray-700 leading-relaxed">
+              Whether you&apos;re a solo performer or part of a group, Footloosemonkey is the place to shine. We celebrate uniqueness and creativity, and we&apos;re here to nurture your passion every step of the way.
+            </p>
+
+            <p className="text-gray-700 leading-relaxed font-medium">
+              Join us in exciting competitions, connect with like-minded talents, and unlock your full potential. Let the stage be yours—because everyone deserves their moment to shine!
+            </p>
+          </div>
+
+          <div className="mt-8 flex gap-4 justify-center">
+            <Link href="/about">
+              <button className="px-8 py-3 bg-gradient-to-r from-[#2E476A] to-[#3498db] text-white font-bold rounded-full hover:opacity-90 transition duration-300 shadow-lg">
+                Know More
+              </button>
+            </Link>
+            <Link href="/register">
+              <button className="px-8 py-3 bg-white text-[#2c3e50] font-bold rounded-full border-2 border-[#3498db] hover:bg-[#f8f9fa] transition duration-300 shadow-lg">
+                Join Now
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </motion.div>
