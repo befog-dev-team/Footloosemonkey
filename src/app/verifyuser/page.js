@@ -36,7 +36,7 @@ const VerifyPayment = () => {
             if (response.data?.participant) {
                 setMessage('Verification successful!');
                 toast.success('User Verified Successfully!');
-                router.push(`/submission?email=${encodeURIComponent(email)}`);
+                router.push(`/submission?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
                 return;
             }
 

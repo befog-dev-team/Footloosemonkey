@@ -10,6 +10,7 @@ import { Loader, Upload, User, Video, Image, FileText } from 'lucide-react';
 const UploadForm = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
+    const [paymentId, setPaymentId] = useState('');
     const [loading, setLoading] = useState(false);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [error, setError] = useState('');
@@ -41,6 +42,8 @@ const UploadForm = () => {
         const params = new URLSearchParams(window.location.search);
         const emailParam = params.get('email');
         if (emailParam) setEmail(emailParam);
+        const paymentIdParam = params.get('paymentId');
+        if (paymentIdParam) setPaymentId(paymentIdParam);
     }, []);
 
     // Fetch participant data when email changes
@@ -53,7 +56,7 @@ const UploadForm = () => {
             setIsDataLoaded(true);
 
             try {
-                const checkResponse = await axios.get(`/api/checksubmission?email=${encodeURIComponent(email)}`);
+                const checkResponse = await axios.get(`/api/checksubmission?email=${encodeURIComponent(email)}&paymentId=${encodeURIComponent(paymentId)}`);
                 if (checkResponse.data.success) {
                     toast.error("You've already submitted your talent!");
                     setError("You've already submitted your talent!");

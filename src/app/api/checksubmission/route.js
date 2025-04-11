@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
+    const paymentId = searchParams.get('paymentId');
 
     if (!email) {
         return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -16,9 +17,14 @@ export async function GET(request) {
     try {
         // First find the participant by email
         const participant = await prisma.participant.findFirst({
-            where: { email },
+            where: {
+                email: { equals: email, mode: 'insensitive' },
+                ...(paymentId && { paymentId }) // Optional paymentId filter
+            },
             select: { id: true }
         });
+
+        console.log("Participant found:", participant);
 
         if (!participant) {
             return NextResponse.json({
