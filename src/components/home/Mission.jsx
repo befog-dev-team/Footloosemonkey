@@ -75,7 +75,7 @@ const Mission = () => {
       {/* Content Section */}
       <div className="w-full flex flex-col items-center justify-center lg:w-1/2 lg:order-2 order-1 px-4 md:px-6 lg:px-16 py-8">
         <div className="text-center max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#e74c3c] to-[#3498db]">
+          <h1 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#e74c3c] to-[#3498db]">
             Where Talent Knows No Age!
           </h1>
 
