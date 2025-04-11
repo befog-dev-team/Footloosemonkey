@@ -75,13 +75,13 @@ const Mission = () => {
       {/* Content Section */}
       <div className="w-full flex flex-col items-center justify-center lg:w-1/2 lg:order-2 order-1 px-4 md:px-6 lg:px-16 py-8">
         <div className="text-center max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#2E476A] to-[#3498db]">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#e74c3c] to-[#3498db]">
             Where Talent Knows No Age!
           </h1>
 
           <div className="space-y-6 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              At <span className="font-bold text-[#2E476A]">Footloosemonkey</span>, we believe that talent has no limits! Our mission is to provide a fun, safe, and inspiring platform for individuals of all ages to showcase their skills in singing, dancing, acting, mimicry, and more.
+              At <span className="font-semibold text-[#e74c3c]">Footloosemonkey</span>, we believe that talent has no limits! Our mission is to provide a fun, safe, and inspiring platform for individuals of all ages to showcase their skills in singing, dancing, acting, mimicry, and more.
             </p>
 
             <p className="text-gray-700 leading-relaxed">
@@ -95,7 +95,7 @@ const Mission = () => {
 
           <div className="mt-8 flex gap-4 justify-center">
             <Link href="/about">
-              <button className="px-8 py-3 bg-gradient-to-r from-[#2E476A] to-[#3498db] text-white font-bold rounded-full hover:opacity-90 transition duration-300 shadow-lg">
+              <button className="px-8 py-3 bg-gradient-to-r from-[#e74c3c] to-[#3498db] text-white font-bold rounded-full hover:opacity-90 transition duration-300 shadow-lg">
                 Know More
               </button>
             </Link>
