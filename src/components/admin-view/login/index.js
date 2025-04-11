@@ -7,7 +7,7 @@ const controls = [
         name: 'email',
         placeholder: 'Enter your email',
         type: 'email',
-        label: 'email'
+        label: 'Email'
     },
     {
         name: 'password',

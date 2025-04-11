@@ -10,7 +10,7 @@ export async function POST(req) {
         const { email, password } = await req.json();
 
         // Find admin by email
-        const admin = await prisma.admin.findUnique({
+        const admin = await prisma.admin.findFirst({
             where: { email }
         });
 
